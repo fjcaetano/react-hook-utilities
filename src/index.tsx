@@ -8,6 +8,21 @@ import {
 } from 'react';
 
 /**
+ * Executs an asynchronous effect
+ *
+ * @param effect the effect to be executed.
+ * @param deps the effect's dependencies.
+ */
+export const useAsyncEffect = (
+  effect: () => Promise<void>,
+  deps?: DependencyList,
+) => {
+  useEffect(() => {
+    effect();
+  }, deps);
+};
+
+/**
  * Executes a layout effect asynchronously.
  *
  * @param effect the layout effect to be executed.
