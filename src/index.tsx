@@ -73,3 +73,22 @@ export const useEffectUpdate = <Deps extends ReadonlyArray<any>>(
     }
   }, dependencies);
 };
+
+/**
+ * Conditionally executes an effect.
+ *
+ * @param evalCondition A function that receives the dependencies' previous state as argument and
+ * returns a boolean defining if the effect should be executed.
+ * @param effect The effect callback to be executed.
+ * @param dependencies The effect's dependencies.
+ */
+export const useConditionalEffect = <Deps extends ReadonlyArray<any>>(
+  evalCondition: (oldState: Deps) => boolean,
+  effect: () => (() => void) | void,
+  dependencies: Deps,
+) => {
+  useEffectUpdate(
+    oldState => (evalCondition(oldState) ? effect() : undefined),
+    dependencies,
+  );
+};
