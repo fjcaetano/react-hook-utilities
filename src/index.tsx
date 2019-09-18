@@ -1,4 +1,10 @@
-import { DependencyList, useCallback, useState } from 'react';
+import {
+  DependencyList,
+  useEffect,
+  useCallback,
+  useState,
+  useRef,
+} from 'react';
 
 /**
  * Executes a callback promise worker and handle loading and error states.
@@ -46,4 +52,24 @@ export const useWorker = <TArgs extends any[], TRet>(
   );
 
   return { callback, error, isLoading, setError, setIsLoading };
+};
+
+/**
+ * Executes a effect and sends to its callback the previous state.
+ *
+ * @param effect The effect to be executed. Receives the dependencies' previous state as arguments.
+ * @param dependencies The effect's dependencies.
+ */
+export const useEffectUpdate = <Deps extends ReadonlyArray<any>>(
+  effect: (oldState: Deps) => void | (() => void),
+  dependencies: Deps,
+) => {
+  const oldState = useRef<Deps>([] as any);
+  useEffect(() => {
+    try {
+      return effect(oldState.current);
+    } finally {
+      oldState.current = dependencies;
+    }
+  }, dependencies);
 };
