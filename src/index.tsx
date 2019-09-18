@@ -1,10 +1,26 @@
 import {
   DependencyList,
   useEffect,
+  useLayoutEffect,
   useCallback,
   useState,
   useRef,
 } from 'react';
+
+/**
+ * Executes a layout effect asynchronously.
+ *
+ * @param effect the layout effect to be executed.
+ * @param deps the effect's dependencies.
+ */
+export const useAsyncLayoutEffect = (
+  effect: () => Promise<void>,
+  deps?: DependencyList,
+) => {
+  useLayoutEffect(() => {
+    effect();
+  }, deps);
+};
 
 /**
  * Executes a callback promise worker and handle loading and error states.
