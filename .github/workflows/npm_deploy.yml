@@ -1,6 +1,9 @@
 name: Upload to NPM
 
-on: [tags]
+on:
+  push:
+    tags:
+      - '*'
 
 jobs:
   build:
@@ -21,7 +24,8 @@ jobs:
       env:
         CI: true
     - name: Upload to NPM
-      run: |
-        yarn publish
+      uses: actions/npm@master
+      env:
+        NPM_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
       with:
-        token: ${{secrets.NPM_TOKEN}}
+        args: publish
