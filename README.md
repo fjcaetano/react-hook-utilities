@@ -1,4 +1,4 @@
-react-hook-utilities [![Build Status][1]](https://github.com/fjcaetano/react-hook-utilities/actions) [![codecov][2]](https://codecov.io/gh/fjcaetano/react-hook-utilities)
+react-hook-utilities [![Build Status][1]](https://github.com/fjcaetano/react-hook-utilities/actions) [![codecov][2]](https://codecov.io/gh/fjcaetano/react-hook-utilities) [![npm][3]](https://www.npmjs.com/package/react-hook-utilities)
 ---
 
 A set of extraordinarily common React hooks.
@@ -94,3 +94,4 @@ ends or when an error happens. If an exception is thrown or a promise fails, `er
 
 [1]: https://github.com/fjcaetano/react-hook-utilities/workflows/Node%20CI/badge.svg
 [2]: https://codecov.io/gh/fjcaetano/react-hook-utilities/branch/master/graph/badge.svg
+[3]: https://img.shields.io/npm/v/react-hook-utilities
