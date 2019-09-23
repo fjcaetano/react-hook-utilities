@@ -132,3 +132,12 @@ export const useConditionalEffect = <Deps extends ReadonlyArray<any>>(
 export const useDidMount = (effect: () => (() => void) | void) => {
   useEffect(effect, []);
 };
+
+/**
+ * Runs an effect when the component gets unmounted
+ *
+ * @param effect the effect to be executed.
+ */
+export const useDidUnmount = (effect: () => void) => {
+  useEffect(() => effect, []);
+};
