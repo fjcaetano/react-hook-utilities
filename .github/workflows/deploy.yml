@@ -1,4 +1,4 @@
-name: Upload to NPM
+name: Deploy
 
 on:
   push:
@@ -8,13 +8,14 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-
     steps:
     - uses: actions/checkout@v1
+
     - name: Use Node.js 12
       uses: actions/setup-node@v1
       with:
         node-version: 12
+
     - name: install, build, and test
       run: |
         yarn install
@@ -23,9 +24,16 @@ jobs:
         yarn lint
       env:
         CI: true
+
     - name: Upload to NPM
       uses: actions/npm@master
       env:
         NPM_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
       with:
         args: publish
+
+    - name: Generate Docs
+      run: |
+        scripts/deploy-docs-folder.sh
+      env:
+        ACCESS_TOKEN: ${{secrets.DOCS_TOKEN}}
