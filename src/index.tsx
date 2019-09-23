@@ -123,3 +123,12 @@ export const useConditionalEffect = <Deps extends ReadonlyArray<any>>(
     dependencies,
   );
 };
+
+/**
+ * Runs an effect when the component gets mounted.
+ *
+ * @param effect the effect to be executed.
+ */
+export const useDidMount = (effect: () => (() => void) | void) => {
+  useEffect(effect, []);
+};
