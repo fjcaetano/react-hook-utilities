@@ -9,5 +9,9 @@
     "esModuleInterop": true,
     "lib": ["es2015"],
     "inlineSourceMap": true
+  },
+  "typedocOptions": {
+    "exclude": "src/__tests__/**/*",
+    "out": "docs"
   }
 }

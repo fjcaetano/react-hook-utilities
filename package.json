@@ -21,7 +21,8 @@
   "scripts": {
     "build": "tsc && prettier --check 'dist/**/*' --write",
     "test": "jest --coverage",
-    "lint": "prettier --check 'src/**/*'"
+    "lint": "prettier --check 'src/**/*'",
+    "docs": "typedoc --out docs/$npm_package_version && scripts/gen-docs-index.sh $npm_package_version"
   },
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -42,6 +43,7 @@
     "prettier": "^1.18.2",
     "react-test-renderer": "^16.9.0",
     "ts-jest": "^24.1.0",
+    "typedoc": "^0.15.0",
     "typescript": "^3.6.3"
   }
 }

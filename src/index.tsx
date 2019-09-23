@@ -44,14 +44,6 @@ export const useAsyncLayoutEffect = (
  *
  * @param worker The callback function that runs a promise.
  * @param deps The callback dependencies.
- *
- * @returns {
- *  callback: The wrapped callback,
- *  error: Any thrown errors (may be undefined)
- *  isLoading: Whether or not the worker is running
- *  setError: `error` state setter
- *  setIsLoading: `isLoading` state setter
- * }
  */
 export const useWorker = <TArgs extends any[], TRet>(
   worker: (...args: TArgs) => Promise<TRet>,
