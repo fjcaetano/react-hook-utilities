@@ -8,7 +8,7 @@ import {
 } from 'react';
 
 /**
- * Executs an asynchronous effect
+ * Executes an asynchronous effect
  *
  * @param effect the effect to be executed.
  * @param deps the effect's dependencies.
