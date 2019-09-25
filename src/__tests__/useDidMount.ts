@@ -37,3 +37,25 @@ it('cleans up on unmount', () => {
 
   expect(cleanup.mock.calls.length).toEqual(1);
 });
+
+it('runs an async funciton', async () => {
+  let resolve: () => void;
+  let finished = false;
+  const promise = new Promise<void>(r => {
+    resolve = r;
+  });
+
+  effect.mockImplementation(async () => {
+    await promise;
+    finished = true;
+  });
+
+  renderHook(hook);
+
+  expect(effect.mock.calls.length).toEqual(1);
+  expect(finished).toBe(false);
+
+  resolve!();
+
+  expect(finished).toBe(false);
+});
