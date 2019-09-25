@@ -135,8 +135,13 @@ export const useDidMount = (
 /**
  * Runs an effect when the component gets unmounted
  *
- * @param effect the effect to be executed.
+ * @param effect the effect to be executed. May be asynchronous
  */
-export const useDidUnmount = (effect: () => void) => {
-  useEffect(() => effect, []);
+export const useDidUnmount = (effect: () => void | Promise<void>) => {
+  useEffect(
+    () => () => {
+      effect();
+    },
+    [],
+  );
 };
