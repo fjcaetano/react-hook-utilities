@@ -92,6 +92,35 @@ const { isLoading, error, result, callback } = useWorker(
 `isLoading` is set to true as soon as the callback is loaded and only returns to `false` when it
 ends or when an error happens. If an exception is thrown or a promise fails, `error` will be updated.
 
+
+### Did Mount
+
+Runs an effect when the component mounts:
+
+```ts
+useDidMount(() => {
+  cnosole.log("I'm up!");
+});
+```
+
+The effect may be an asynchronous function, in which case, it shouldn't return a cleanup function
+since it won't be executed.
+
+### Did Unmount
+
+Executes an effect when the component unmounts. The effect may also be asynchronous:
+
+```ts
+useDidUnmount(async () => {
+  await busyWork();
+  console.log('heading out');
+});
+```
+
+# Typescript
+
+react-hook-utilities sees Typescript is a first-class citizen. The library is built for and around Typescript and you'll get bonus points for using it. Nonetheless, pure JavaScript files are also available if you're _that_ guy.
+
 [1]: https://github.com/fjcaetano/react-hook-utilities/workflows/Node%20CI/badge.svg
 [2]: https://codecov.io/gh/fjcaetano/react-hook-utilities/branch/master/graph/badge.svg
 [3]: https://img.shields.io/npm/v/react-hook-utilities
