@@ -4,12 +4,15 @@ import { useEffectUpdate } from '..';
 
 const deps = [1, 2, 3];
 
-const hook = async ({ dependencies, cleanup }: any) =>
+const hook = async ({ dependencies = [], cleanup }: any) =>
   new Promise<any>(resolve => {
-    useEffectUpdate(oldState => {
-      resolve(oldState);
-      return cleanup;
-    }, dependencies);
+    useEffectUpdate(
+      oldState => {
+        resolve(oldState);
+        return cleanup;
+      },
+      dependencies, // eslint-disable-line @react-hook-utilities/exhaustive-deps
+    );
   });
 
 it('receives empty array as old state', () => {

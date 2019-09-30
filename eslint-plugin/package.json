@@ -1,0 +1,27 @@
+{
+  "name": "@react-hook-utilities/eslint-plugin",
+  "version": "1.0.0",
+  "description": "ESLint rules for hook react-hook-utilities",
+  "keywords": [
+    "eslint",
+    "eslintplugin",
+    "eslint-plugin"
+  ],
+  "author": "Flávio Caetano",
+  "main": "lib/index.js",
+  "scripts": {
+    "test": "mocha tests --recursive src/__tests__/**/*",
+    "babel": "rm -rf lib && babel src/ -d ./lib"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.6.2",
+    "@babel/preset-env": "^7.6.2",
+    "babel-eslint": "^10.0.3",
+    "eslint": "~3.9.1",
+    "mocha": "^3.1.2"
+  },
+  "engines": {
+    "node": ">=0.10.0"
+  },
+  "license": "ISC"
+}

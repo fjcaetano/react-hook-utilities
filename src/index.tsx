@@ -53,11 +53,11 @@ interface RetryWorkerError {
  */
 export const useAsyncEffect = (
   effect: () => Promise<void>,
-  dependencies?: readonly any[],
+  dependencies: readonly any[] = [],
 ) => {
   useEffect(() => {
     effect();
-  }, dependencies);
+  }, [...dependencies, effect]);
 };
 
 /**
@@ -71,11 +71,11 @@ export const useAsyncEffect = (
  */
 export const useAsyncLayoutEffect = (
   effect: () => Promise<void>,
-  dependencies?: readonly any[],
+  dependencies: readonly any[] = [],
 ) => {
   useLayoutEffect(() => {
     effect();
-  }, dependencies);
+  }, [...dependencies, effect]);
 };
 
 /**
@@ -269,7 +269,7 @@ export function useEffectUpdate<Dependencies extends readonly any[]>(
     } finally {
       oldState.current = dependencies;
     }
-  }, dependencies);
+  }, [...dependencies, effect, oldState.current]);
 }
 
 /**
@@ -427,7 +427,7 @@ export function useConditionalEffect<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>(
  */
 export function useConditionalEffect<Dependencies extends readonly any[]>(
   evalCondition: (oldState: Dependencies) => boolean,
-  effect: () => (() => void) | void,
+  effect: () => void | (() => void),
   dependencies: Dependencies,
 ): void;
 export function useConditionalEffect<Dependencies extends readonly any[]>(
@@ -437,7 +437,7 @@ export function useConditionalEffect<Dependencies extends readonly any[]>(
 ): void {
   useEffectUpdate(
     oldState => (evalCondition(oldState) ? effect() : undefined),
-    dependencies,
+    dependencies, // eslint-disable-line @react-hook-utilities/exhaustive-deps,react-hooks/exhaustive-deps
   );
 }
 
