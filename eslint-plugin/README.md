@@ -1,22 +1,22 @@
 # @react-hook-utilities/eslint-plugin
 
-ESLint rules for hook utils
+ESLint rules for hook react-hook-utilities
 
 ## Installation
 
-You'll first need to install [ESLint](http://eslint.org):
+You'll first need to install [ESLint](http://eslint.org) and [react-hook-utilities](https://www.npmjs.com/package/react-hook-utilities)
 
 ```
-$ npm i eslint --save-dev
+$ npm i eslint react-hook-utilities --save-dev
 ```
 
-Next, install `@react-hook-utilities/eslint-plugin`:
+Next, install `@react-hook-utilities/eslint-plugin` directly from the host dependency:
 
 ```
-$ npm install @react-hook-utilities/eslint-plugin --save-dev
+$ npm install ./node_modules/react-hook-utilities/eslint-plugin --save-dev
 ```
 
-**Note:** If you installed ESLint globally (using the `-g` flag) then you must also install `@react-hook-utilities/eslint-plugin` globally.
+**Note:** If you installed ESLint globally (using the `-g` flag) then you must also install `react-hook-utilities` globally.
 
 ## Usage
 
@@ -43,7 +43,7 @@ Then configure the rules you want to use under the rules section.
 
 ## Supported Rules
 
-* Fill in provided rules here
+* exhaustive-deps: Ensures all hooks external references have been declared as dependencies.
 
 
 
