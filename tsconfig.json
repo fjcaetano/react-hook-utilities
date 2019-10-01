@@ -12,6 +12,8 @@
   },
   "typedocOptions": {
     "exclude": "src/__tests__/**/*",
-    "out": "docs"
+    "out": "docs",
+    "mdPagesSourcePath": "pageDocs",
+    "theme": "markdown-pages"
   }
 }

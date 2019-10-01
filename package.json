@@ -22,7 +22,7 @@
     "build": "tsc && prettier --check 'dist/**/*' --write",
     "test": "jest --coverage",
     "lint": "eslint --ext=.ts,.tsx --max-warnings=0 src/ && prettier --check 'src/**/*'",
-    "docs": "typedoc --out docs/$npm_package_version && scripts/gen-docs-index.sh $npm_package_version",
+    "docs": "scripts/gen-docs.sh $npm_package_version",
     "version": "conventional-changelog -p angular -i CHANGELOG.md -s && git add CHANGELOG.md"
   },
   "main": "dist/index.js",
@@ -54,6 +54,7 @@
     "react-test-renderer": "^16.9.0",
     "ts-jest": "^24.1.0",
     "typedoc": "^0.15.0",
-    "typescript": "^3.7"
+    "typescript": "^3.7",
+    "typedoc-plugin-markdown-pages": "^0.3.0"
   }
 }
