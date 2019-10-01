@@ -6,13 +6,13 @@
  *
  * Original Source: https://github.com/facebook/react/blob/9e64bf18e11828d6b4c0363bff5ed2eca1ccd838/packages/eslint-plugin-react-hooks/__tests__/ESLintRuleExhaustiveDeps-test.js
  */
-
 'use strict';
 
 const ESLintTester = require('eslint').RuleTester;
-const ReactHooksESLintPlugin = require('@react-hook-utilities/eslint-plugin');
-const ReactHooksESLintRule = ReactHooksESLintPlugin.rules['exhaustive-deps'];
 
+const ReactHooksESLintPlugin = require('..');
+
+const ReactHooksESLintRule = ReactHooksESLintPlugin.rules['exhaustive-deps'];
 ESLintTester.setDefaultConfig({
   parser: require.resolve('babel-eslint'),
   parserOptions: {
@@ -175,7 +175,7 @@ const tests = {
           const local1 = {};
           {
             const local2 = {};
-            useWorkerLoad(async () => {
+            useWorkerState(async () => {
               console.log(local1);
               console.log(local2);
             }, [local1, local2]);
@@ -189,7 +189,7 @@ const tests = {
           const local1 = {};
           function MyNestedComponent() {
             const local2 = {};
-            useWorkerLoad(async () => {
+            useWorkerState(async () => {
               console.log(local1);
               console.log(local2);
             }, [local2]);
@@ -495,8 +495,8 @@ const tests = {
           const [state4, dispatch2] = React.useReducer();
           const [state5, maybeSetState] = useFunnyState();
           const [state6, maybeDispatch] = useFunnyReducer();
-          const mySetState = useWorkerLoad(async () => {}, []);
-          let myDispatch = useWorkerLoad(async () => {}, []);
+          const mySetState = useWorkerState(async () => {}, []);
+          let myDispatch = useWorkerState(async () => {}, []);
 
           useAsyncEffect(async () => {
             // Known to be static
@@ -552,8 +552,8 @@ const tests = {
           const [state5, maybeSetState] = useFunnyState();
           const [state6, maybeDispatch] = useFunnyReducer();
 
-          const mySetState = useWorkerLoad(async () => {}, []);
-          let myDispatch = useWorkerLoad(async () => {}, []);
+          const mySetState = useWorkerState(async () => {}, []);
+          let myDispatch = useWorkerState(async () => {}, []);
 
           useAsyncEffect(async () => {
             // Known to be static
@@ -715,7 +715,7 @@ const tests = {
       // Valid because it's not an effect.
       code: `
         function useMyThing(myRef) {
-          useWorkerLoad(async () => {
+          useWorkerState(async () => {
             const handleMouse = () => {};
             myRef.current.addEventListener('mousemove', handleMouse);
             myRef.current.addEventListener('mousein', handleMouse);
@@ -856,10 +856,10 @@ const tests = {
       // Don't warn for this either.
       code: `
         function MyComponent(props) {
-          const fn = useWorkerLoad(async () => {
+          const fn = useWorkerState(async () => {
             console.log(props.foo.bar.baz);
           }, [props]);
-          const fn2 = useWorkerLoad(async () => {
+          const fn2 = useWorkerState(async () => {
             console.log(props.foo.bar.baz);
           }, [props.foo]);
           const fn3 = useEffectUpdate(() => {
@@ -1204,7 +1204,7 @@ const tests = {
     {
       code: `
         function Example() {
-          const foo = useWorkerLoad(async () => {
+          const foo = useWorkerState(async () => {
             foo();
           }, []);
         }
@@ -1213,7 +1213,7 @@ const tests = {
     {
       code: `
         function Example({ prop }) {
-          const foo = useWorkerLoad(async () => {
+          const foo = useWorkerState(async () => {
             if (prop) {
               foo();
             }
@@ -1232,8 +1232,7 @@ const tests = {
           });
         }
       `,
-    },
-    // Ignore Generic Type Variables for arrow functions
+    }, // Ignore Generic Type Variables for arrow functions
     {
       code: `
         function Example({ prop }) {
@@ -1242,8 +1241,7 @@ const tests = {
           }, [prop]);
         }
       `,
-    },
-    // Ignore arguments keyword for arrow functions.
+    }, // Ignore arguments keyword for arrow functions.
     {
       code: `
         function Example() {
@@ -1739,7 +1737,7 @@ const tests = {
           const local1 = {};
           function MyNestedComponent() {
             const local2 = {};
-            useWorkerLoad(async () => {
+            useWorkerState(async () => {
               console.log(local1);
               console.log(local2);
             }, [local1]);
@@ -1751,7 +1749,7 @@ const tests = {
           const local1 = {};
           function MyNestedComponent() {
             const local2 = {};
-            useWorkerLoad(async () => {
+            useWorkerState(async () => {
               console.log(local1);
               console.log(local2);
             }, [local2]);
@@ -1759,7 +1757,7 @@ const tests = {
         }
       `,
       errors: [
-        "React Hook useWorkerLoad has a missing dependency: 'local2'. " +
+        "React Hook useWorkerState has a missing dependency: 'local2'. " +
           'Either include it or remove the dependency array. ' +
           "Outer scope values like 'local1' aren't valid dependencies " +
           "because mutating them doesn't re-render the component.",
@@ -1834,16 +1832,16 @@ const tests = {
     {
       code: `
         function MyComponent() {
-          useWorkerLoad(async () => {}, [window]);
+          useWorkerState(async () => {}, [window]);
         }
       `,
       output: `
         function MyComponent() {
-          useWorkerLoad(async () => {}, []);
+          useWorkerState(async () => {}, []);
         }
       `,
       errors: [
-        "React Hook useWorkerLoad has an unnecessary dependency: 'window'. " +
+        "React Hook useWorkerState has an unnecessary dependency: 'window'. " +
           'Either exclude it or remove the dependency array. ' +
           "Outer scope values like 'window' aren't valid dependencies " +
           "because mutating them doesn't re-render the component.",
@@ -1870,22 +1868,22 @@ const tests = {
       ],
     },
     {
-      // It is not valid for useWorkerLoad to specify extraneous deps
+      // It is not valid for useWorkerState to specify extraneous deps
       // because it doesn't serve as a side effect trigger unlike useAsyncEffect.
       code: `
         function MyComponent(props) {
           let local = props.foo;
-          useWorkerLoad(async () => {}, [local]);
+          useWorkerState(async () => {}, [local]);
         }
       `,
       output: `
         function MyComponent(props) {
           let local = props.foo;
-          useWorkerLoad(async () => {}, []);
+          useWorkerState(async () => {}, []);
         }
       `,
       errors: [
-        "React Hook useWorkerLoad has an unnecessary dependency: 'local'. " +
+        "React Hook useWorkerState has an unnecessary dependency: 'local'. " +
           'Either exclude it or remove the dependency array.',
       ],
     },
@@ -2265,7 +2263,7 @@ const tests = {
       ],
     },
     {
-      // It is not valid for useWorkerLoad to specify extraneous deps
+      // It is not valid for useWorkerState to specify extraneous deps
       // because it doesn't serve as a side effect trigger unlike useAsyncEffect.
       // However, we generally allow specifying *broader* deps as escape hatch.
       // So while [props, props.foo] is unnecessary, 'props' wins here as the
@@ -2273,7 +2271,7 @@ const tests = {
       code: `
         function MyComponent(props) {
           const local = {};
-          useWorkerLoad(async () => {
+          useWorkerState(async () => {
             console.log(props.foo);
             console.log(props.bar);
           }, [props, props.foo]);
@@ -2282,14 +2280,14 @@ const tests = {
       output: `
         function MyComponent(props) {
           const local = {};
-          useWorkerLoad(async () => {
+          useWorkerState(async () => {
             console.log(props.foo);
             console.log(props.bar);
           }, [props]);
         }
       `,
       errors: [
-        "React Hook useWorkerLoad has an unnecessary dependency: 'props.foo'. " +
+        "React Hook useWorkerState has an unnecessary dependency: 'props.foo'. " +
           'Either exclude it or remove the dependency array.',
       ],
     },
@@ -2298,7 +2296,7 @@ const tests = {
       code: `
         function MyComponent(props) {
           const local = {};
-          useWorkerLoad(async () => {
+          useWorkerState(async () => {
             console.log(props.foo);
             console.log(props.bar);
           }, []);
@@ -2307,14 +2305,14 @@ const tests = {
       output: `
         function MyComponent(props) {
           const local = {};
-          useWorkerLoad(async () => {
+          useWorkerState(async () => {
             console.log(props.foo);
             console.log(props.bar);
           }, [props.bar, props.foo]);
         }
       `,
       errors: [
-        "React Hook useWorkerLoad has missing dependencies: 'props.bar' and 'props.foo'. " +
+        "React Hook useWorkerState has missing dependencies: 'props.bar' and 'props.foo'. " +
           'Either include them or remove the dependency array.',
       ],
     },
@@ -2535,7 +2533,7 @@ const tests = {
       code: `
         function MyComponent() {
           const local = {id: 42};
-          const fn = useWorkerLoad(async () => {
+          const fn = useWorkerState(async () => {
             console.log(local);
           }, [local.id]);
         }
@@ -2543,13 +2541,13 @@ const tests = {
       output: `
         function MyComponent() {
           const local = {id: 42};
-          const fn = useWorkerLoad(async () => {
+          const fn = useWorkerState(async () => {
             console.log(local);
           }, [local]);
         }
       `,
       errors: [
-        "React Hook useWorkerLoad has a missing dependency: 'local'. " +
+        "React Hook useWorkerState has a missing dependency: 'local'. " +
           'Either include it or remove the dependency array.',
       ],
     },
@@ -2559,7 +2557,7 @@ const tests = {
       code: `
         function MyComponent() {
           const local = {id: 42};
-          const fn = useWorkerLoad(async () => {
+          const fn = useWorkerState(async () => {
             console.log(local);
           }, [local.id, local]);
         }
@@ -2567,33 +2565,33 @@ const tests = {
       output: `
         function MyComponent() {
           const local = {id: 42};
-          const fn = useWorkerLoad(async () => {
+          const fn = useWorkerState(async () => {
             console.log(local);
           }, [local]);
         }
       `,
       errors: [
-        "React Hook useWorkerLoad has an unnecessary dependency: 'local.id'. " +
+        "React Hook useWorkerState has an unnecessary dependency: 'local.id'. " +
           'Either exclude it or remove the dependency array.',
       ],
     },
     {
       code: `
         function MyComponent(props) {
-          const fn = useWorkerLoad(async () => {
+          const fn = useWorkerState(async () => {
             console.log(props.foo.bar.baz);
           }, []);
         }
       `,
       output: `
         function MyComponent(props) {
-          const fn = useWorkerLoad(async () => {
+          const fn = useWorkerState(async () => {
             console.log(props.foo.bar.baz);
           }, [props.foo.bar.baz]);
         }
       `,
       errors: [
-        "React Hook useWorkerLoad has a missing dependency: 'props.foo.bar.baz'. " +
+        "React Hook useWorkerState has a missing dependency: 'props.foo.bar.baz'. " +
           'Either include it or remove the dependency array.',
       ],
     },
@@ -2601,7 +2599,7 @@ const tests = {
       code: `
         function MyComponent(props) {
           let color = {}
-          const fn = useWorkerLoad(async () => {
+          const fn = useWorkerState(async () => {
             console.log(props.foo.bar.baz);
             console.log(color);
           }, [props.foo, props.foo.bar.baz]);
@@ -2610,14 +2608,14 @@ const tests = {
       output: `
         function MyComponent(props) {
           let color = {}
-          const fn = useWorkerLoad(async () => {
+          const fn = useWorkerState(async () => {
             console.log(props.foo.bar.baz);
             console.log(color);
           }, [color, props.foo.bar.baz]);
         }
       `,
       errors: [
-        "React Hook useWorkerLoad has a missing dependency: 'color'. " +
+        "React Hook useWorkerState has a missing dependency: 'color'. " +
           'Either include it or remove the dependency array.',
       ],
     },
@@ -2629,27 +2627,27 @@ const tests = {
       // TODO: maybe consider suggesting a narrower one by default in these cases.
       code: `
         function MyComponent(props) {
-          const fn = useWorkerLoad(async () => {
+          const fn = useWorkerState(async () => {
             console.log(props.foo.bar.baz);
           }, [props.foo.bar.baz, props.foo]);
         }
       `,
       output: `
         function MyComponent(props) {
-          const fn = useWorkerLoad(async () => {
+          const fn = useWorkerState(async () => {
             console.log(props.foo.bar.baz);
           }, [props.foo]);
         }
       `,
       errors: [
-        "React Hook useWorkerLoad has an unnecessary dependency: 'props.foo.bar.baz'. " +
+        "React Hook useWorkerState has an unnecessary dependency: 'props.foo.bar.baz'. " +
           'Either exclude it or remove the dependency array.',
       ],
     },
     {
       code: `
         function MyComponent(props) {
-          const fn = useWorkerLoad(async () => {
+          const fn = useWorkerState(async () => {
             console.log(props.foo.bar.baz);
             console.log(props.foo.fizz.bizz);
           }, []);
@@ -2657,14 +2655,14 @@ const tests = {
       `,
       output: `
         function MyComponent(props) {
-          const fn = useWorkerLoad(async () => {
+          const fn = useWorkerState(async () => {
             console.log(props.foo.bar.baz);
             console.log(props.foo.fizz.bizz);
           }, [props.foo.bar.baz, props.foo.fizz.bizz]);
         }
       `,
       errors: [
-        "React Hook useWorkerLoad has missing dependencies: 'props.foo.bar.baz' and 'props.foo.fizz.bizz'. " +
+        "React Hook useWorkerState has missing dependencies: 'props.foo.bar.baz' and 'props.foo.fizz.bizz'. " +
           'Either include them or remove the dependency array.',
       ],
     },
@@ -2677,27 +2675,27 @@ const tests = {
       // This is why we end up with just 'props.foo.bar', and not them both.
       code: `
         function MyComponent(props) {
-          const fn = useWorkerLoad(async () => {
+          const fn = useWorkerState(async () => {
             console.log(props.foo.bar);
           }, [props.foo.bar.baz]);
         }
       `,
       output: `
         function MyComponent(props) {
-          const fn = useWorkerLoad(async () => {
+          const fn = useWorkerState(async () => {
             console.log(props.foo.bar);
           }, [props.foo.bar]);
         }
       `,
       errors: [
-        "React Hook useWorkerLoad has a missing dependency: 'props.foo.bar'. " +
+        "React Hook useWorkerState has a missing dependency: 'props.foo.bar'. " +
           'Either include it or remove the dependency array.',
       ],
     },
     {
       code: `
         function MyComponent(props) {
-          const fn = useWorkerLoad(async () => {
+          const fn = useWorkerState(async () => {
             console.log(props);
             console.log(props.hello);
           }, [props.foo.bar.baz]);
@@ -2705,14 +2703,14 @@ const tests = {
       `,
       output: `
         function MyComponent(props) {
-          const fn = useWorkerLoad(async () => {
+          const fn = useWorkerState(async () => {
             console.log(props);
             console.log(props.hello);
           }, [props]);
         }
       `,
       errors: [
-        "React Hook useWorkerLoad has a missing dependency: 'props'. " +
+        "React Hook useWorkerState has a missing dependency: 'props'. " +
           'Either include it or remove the dependency array.',
       ],
     },
@@ -2784,7 +2782,7 @@ const tests = {
       code: `
         function MyComponent() {
           const local1 = {};
-          useWorkerLoad(async () => {
+          useWorkerState(async () => {
             const local1 = {};
             console.log(local1);
           }, [local1]);
@@ -2793,14 +2791,14 @@ const tests = {
       output: `
         function MyComponent() {
           const local1 = {};
-          useWorkerLoad(async () => {
+          useWorkerState(async () => {
             const local1 = {};
             console.log(local1);
           }, []);
         }
       `,
       errors: [
-        "React Hook useWorkerLoad has an unnecessary dependency: 'local1'. " +
+        "React Hook useWorkerState has an unnecessary dependency: 'local1'. " +
           'Either exclude it or remove the dependency array.',
       ],
     },
@@ -2808,17 +2806,17 @@ const tests = {
       code: `
         function MyComponent() {
           const local1 = {};
-          useWorkerLoad(async () => {}, [local1]);
+          useWorkerState(async () => {}, [local1]);
         }
       `,
       output: `
         function MyComponent() {
           const local1 = {};
-          useWorkerLoad(async () => {}, []);
+          useWorkerState(async () => {}, []);
         }
       `,
       errors: [
-        "React Hook useWorkerLoad has an unnecessary dependency: 'local1'. " +
+        "React Hook useWorkerState has an unnecessary dependency: 'local1'. " +
           'Either exclude it or remove the dependency array.',
       ],
     },
@@ -3057,7 +3055,7 @@ const tests = {
           useAsyncEffect(async () => {
             console.log(props.foo);
           }, []);
-          useWorkerLoad(async () => {
+          useWorkerState(async () => {
             console.log(props.foo);
           }, []);
           useEffectUpdate(() => {
@@ -3066,7 +3064,7 @@ const tests = {
           React.useAsyncEffect(async () => {
             console.log(props.foo);
           }, []);
-          React.useWorkerLoad(async () => {
+          React.useWorkerState(async () => {
             console.log(props.foo);
           }, []);
           React.useEffectUpdate(() => {
@@ -3082,7 +3080,7 @@ const tests = {
           useAsyncEffect(async () => {
             console.log(props.foo);
           }, [props.foo]);
-          useWorkerLoad(async () => {
+          useWorkerState(async () => {
             console.log(props.foo);
           }, [props.foo]);
           useEffectUpdate(() => {
@@ -3091,7 +3089,7 @@ const tests = {
           React.useAsyncEffect(async () => {
             console.log(props.foo);
           }, [props.foo]);
-          React.useWorkerLoad(async () => {
+          React.useWorkerState(async () => {
             console.log(props.foo);
           }, [props.foo]);
           React.useEffectUpdate(() => {
@@ -3105,13 +3103,13 @@ const tests = {
       errors: [
         "React Hook useAsyncEffect has a missing dependency: 'props.foo'. " +
           'Either include it or remove the dependency array.',
-        "React Hook useWorkerLoad has a missing dependency: 'props.foo'. " +
+        "React Hook useWorkerState has a missing dependency: 'props.foo'. " +
           'Either include it or remove the dependency array.',
         "React Hook useEffectUpdate has a missing dependency: 'props.foo'. " +
           'Either include it or remove the dependency array.',
         "React Hook React.useAsyncEffect has a missing dependency: 'props.foo'. " +
           'Either include it or remove the dependency array.',
-        "React Hook React.useWorkerLoad has a missing dependency: 'props.foo'. " +
+        "React Hook React.useWorkerState has a missing dependency: 'props.foo'. " +
           'Either include it or remove the dependency array.',
         "React Hook React.useEffectUpdate has a missing dependency: 'props.foo'. " +
           'Either include it or remove the dependency array.',
@@ -3373,7 +3371,7 @@ const tests = {
         function MyComponent({ activeTab, initY }) {
           const ref1 = useRef();
           const ref2 = useRef();
-          const fn = useWorkerLoad(async () => {
+          const fn = useWorkerState(async () => {
             ref1.current.scrollTop = initY;
             ref2.current.scrollTop = initY;
           }, [ref1.current, ref2.current, activeTab, initY]);
@@ -3383,14 +3381,14 @@ const tests = {
         function MyComponent({ activeTab, initY }) {
           const ref1 = useRef();
           const ref2 = useRef();
-          const fn = useWorkerLoad(async () => {
+          const fn = useWorkerState(async () => {
             ref1.current.scrollTop = initY;
             ref2.current.scrollTop = initY;
           }, [initY]);
         }
       `,
       errors: [
-        "React Hook useWorkerLoad has unnecessary dependencies: 'activeTab', 'ref1.current', and 'ref2.current'. " +
+        "React Hook useWorkerState has unnecessary dependencies: 'activeTab', 'ref1.current', and 'ref2.current'. " +
           'Either exclude them or remove the dependency array. ' +
           "Mutable values like 'ref1.current' aren't valid dependencies " +
           "because mutating them doesn't re-render the component.",
@@ -4150,7 +4148,7 @@ const tests = {
           let x = props.foo;
           {
             let y = props.bar;
-            const fn = useWorkerLoad(async () => {
+            const fn = useWorkerState(async () => {
               // nothing
             }, [MutableStore.hello.world, props.foo, x, y, z, global.stuff]);
           }
@@ -4164,14 +4162,14 @@ const tests = {
           let x = props.foo;
           {
             let y = props.bar;
-            const fn = useWorkerLoad(async () => {
+            const fn = useWorkerState(async () => {
               // nothing
             }, []);
           }
         }
       `,
       errors: [
-        'React Hook useWorkerLoad has unnecessary dependencies: ' +
+        'React Hook useWorkerState has unnecessary dependencies: ' +
           "'MutableStore.hello.world', 'global.stuff', 'props.foo', 'x', 'y', and 'z'. " +
           'Either exclude them or remove the dependency array. ' +
           "Outer scope values like 'MutableStore.hello.world' aren't valid dependencies " +
@@ -4982,53 +4980,52 @@ const tests = {
     {
       code: `
         function Example() {
-          const foo = useWorkerLoad(async () => {
+          const foo = useWorkerState(async () => {
             foo();
           }, [foo]);
         }
       `,
       output: `
         function Example() {
-          const foo = useWorkerLoad(async () => {
+          const foo = useWorkerState(async () => {
             foo();
           }, []);
         }
       `,
       errors: [
-        "React Hook useWorkerLoad has an unnecessary dependency: 'foo'. " +
+        "React Hook useWorkerState has an unnecessary dependency: 'foo'. " +
           'Either exclude it or remove the dependency array.',
       ],
     },
     {
       code: `
         function Example({ prop }) {
-          const foo = useWorkerLoad(async () => {
+          const foo = useWorkerState(async () => {
             prop.hello(foo);
           }, [foo]);
-          const bar = useWorkerLoad(async () => {
+          const bar = useWorkerState(async () => {
             foo();
           }, [foo]);
         }
       `,
       output: `
         function Example({ prop }) {
-          const foo = useWorkerLoad(async () => {
+          const foo = useWorkerState(async () => {
             prop.hello(foo);
           }, [prop]);
-          const bar = useWorkerLoad(async () => {
+          const bar = useWorkerState(async () => {
             foo();
           }, [foo]);
         }
       `,
       errors: [
-        "React Hook useWorkerLoad has a missing dependency: 'prop'. " +
+        "React Hook useWorkerState has a missing dependency: 'prop'. " +
           'Either include it or remove the dependency array.',
       ],
     },
   ],
-};
+}; // For easier local testing
 
-// For easier local testing
 if (!process.env.CI) {
   let only = [];
   let skipped = [];
@@ -5037,23 +5034,27 @@ if (!process.env.CI) {
       delete t.skip;
       skipped.push(t);
     }
+
     if (t.only) {
       delete t.only;
       only.push(t);
-    }
-    // if (!t.options) {
+    } // if (!t.options) {
     //   t.options = [{ additionalHooks: 'useAsyncLayoutEffect' }];
     // }
   });
+
   const predicate = t => {
     if (only.length > 0) {
       return only.indexOf(t) !== -1;
     }
+
     if (skipped.length > 0) {
       return skipped.indexOf(t) === -1;
     }
+
     return true;
   };
+
   tests.valid = tests.valid.filter(predicate);
   tests.invalid = tests.invalid.filter(predicate);
 }

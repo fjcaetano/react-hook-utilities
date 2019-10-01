@@ -4,6 +4,7 @@ import {
   useCallback,
   useState,
   useRef,
+  useMemo,
   MutableRefObject,
 } from 'react';
 
@@ -59,7 +60,7 @@ export const useAsyncEffect = (
 ) => {
   useEffect(() => {
     effect();
-  }, [...dependencies, effect]);
+  }, [...dependencies, effect]); // eslint-disable-line react-hooks/exhaustive-deps
 };
 
 /**
@@ -77,7 +78,7 @@ export const useAsyncLayoutEffect = (
 ) => {
   useLayoutEffect(() => {
     effect();
-  }, [...dependencies, effect]);
+  }, [...dependencies, effect]); // eslint-disable-line react-hooks/exhaustive-deps
 };
 
 /**
@@ -114,19 +115,20 @@ export const useWorker = <TArgs extends readonly any[], TRet>(
     setState(s => ({ ...s, isLoading }));
   }, []);
 
-  const callback = useCallback(async (...args: TArgs): Promise<
-    TRet | undefined
-  > => {
-    try {
-      setIsLoading(true);
-      const result = await worker(...args);
-      setState({ isLoading: false, error: undefined });
+  const callback = useCallback(
+    async (...args: TArgs): Promise<TRet | undefined> => {
+      try {
+        setIsLoading(true);
+        const result = await worker(...args);
+        setState({ isLoading: false, error: undefined });
 
-      return result;
-    } catch (error) {
-      setState({ isLoading: false, error });
-    }
-  }, dependencies);
+        return result;
+      } catch (error) {
+        setState({ isLoading: false, error });
+      }
+    },
+    [...dependencies, worker], // eslint-disable-line react-hooks/exhaustive-deps
+  );
 
   return { callback, error, isLoading, setError, setIsLoading };
 };
@@ -280,7 +282,7 @@ export function useEffectUpdate<Dependencies extends readonly any[]>(
     } finally {
       oldState.current = dependencies;
     }
-  }, [...dependencies, effect, oldState.current]);
+  }, [...dependencies, effect]); // eslint-disable-line react-hooks/exhaustive-deps
 }
 
 /**
@@ -458,7 +460,7 @@ export function useConditionalEffect<Dependencies extends readonly any[]>(
 ): void {
   useEffectUpdate(
     oldState => (evalCondition(oldState) ? effect() : undefined),
-    dependencies, // eslint-disable-line @react-hook-utilities/exhaustive-deps,react-hooks/exhaustive-deps
+    dependencies, // eslint-disable-line @react-hook-utilities/exhaustive-deps
   );
 }
 
@@ -476,7 +478,7 @@ export const useDidMount = (
     if (typeof result === 'function') {
       return result;
     }
-  }, []);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 };
 
 /**
@@ -508,7 +510,7 @@ export const useDidUnmount = (
         effect();
       }
     },
-    dependencies || [],
+    dependencies || [], // eslint-disable-line react-hooks/exhaustive-deps
   );
 };
 
@@ -574,7 +576,7 @@ export function useWorkerState<Data>(
     async () => {
       setData(await worker());
     },
-    dependencies,
+    dependencies, // eslint-disable-line @react-hook-utilities/exhaustive-deps
   );
 
   // start loading immediately
@@ -612,28 +614,34 @@ export const usePromisedState = <T,>(): [
   ValuablePromise<T>,
   (_: T) => void,
 ] => {
-  let resolve: (v: T) => void;
-  const createPromise = (value?: T) => {
-    const result: ValuablePromise<T> = new Promise<T>(r => {
-      resolve = r;
-      if (value) {
-        r(value);
-      }
-    });
-    result.value = value;
-    return result;
-  };
+  let resolve = useRef<(v: T) => void>();
+  const createPromise = useMemo(
+    () => (value?: T) => {
+      const result: ValuablePromise<T> = new Promise<T>(r => {
+        resolve.current = r;
+        if (value) {
+          r(value);
+        }
+      });
+      result.value = value;
+      return result;
+    },
+    [],
+  );
 
   const [state, setState] = useState(createPromise);
   return [
     state,
-    useCallback((newValue: T) => {
-      if (!!newValue) {
-        resolve(newValue);
-        state.value = newValue;
-      }
+    useCallback(
+      (newValue: T) => {
+        if (!!newValue) {
+          resolve.current!(newValue);
+          state.value = newValue;
+        }
 
-      setState(createPromise(newValue));
-    }, []),
+        setState(createPromise(newValue));
+      },
+      [createPromise, state.value],
+    ), // eslint-disable-line @react-hook-utilities/exhaustive-deps
   ];
 };

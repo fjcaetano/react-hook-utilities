@@ -3,7 +3,7 @@ import { renderHook, act } from '@testing-library/react-hooks';
 import { usePromisedState } from '..';
 
 describe('non-nullable, non-undefined state type', () => {
-  const hookHelper = () => usePromisedState<number>();
+  const useHookHelper = () => usePromisedState<number>();
 
   it("does not resolve promise if set isn't called", () => {
     let resolved = false;
@@ -11,7 +11,7 @@ describe('non-nullable, non-undefined state type', () => {
       result: {
         current: [promise],
       },
-    } = renderHook(hookHelper);
+    } = renderHook(useHookHelper);
 
     promise.then(() => {
       resolved = true;
@@ -27,7 +27,7 @@ describe('non-nullable, non-undefined state type', () => {
       result: {
         current: [promise, set],
       },
-    } = renderHook(hookHelper);
+    } = renderHook(useHookHelper);
 
     promise.then(() => {
       resolved = true;
@@ -48,7 +48,7 @@ describe('non-nullable, non-undefined state type', () => {
 
   it('resolves a new promise when the state is set', async () => {
     let resolved = false;
-    const { result } = renderHook(hookHelper);
+    const { result } = renderHook(useHookHelper);
 
     result.current[0].then(() => {
       resolved = true;
@@ -69,7 +69,7 @@ describe('non-nullable, non-undefined state type', () => {
 });
 
 describe('nullable state type', () => {
-  const hookHelper = () => usePromisedState<number | undefined>();
+  const useHookHelper = () => usePromisedState<number | undefined>();
 
   it("does not resolve promise if set isn't called", () => {
     let resolved = false;
@@ -77,7 +77,7 @@ describe('nullable state type', () => {
       result: {
         current: [promise],
       },
-    } = renderHook(hookHelper);
+    } = renderHook(useHookHelper);
 
     promise.then(() => {
       resolved = true;
@@ -93,7 +93,7 @@ describe('nullable state type', () => {
       result: {
         current: [promise, set],
       },
-    } = renderHook(hookHelper);
+    } = renderHook(useHookHelper);
 
     promise.then(() => {
       resolved = true;
@@ -108,7 +108,7 @@ describe('nullable state type', () => {
   });
 
   it('waits on a new state after setting undefined', async () => {
-    const { result } = renderHook(hookHelper);
+    const { result } = renderHook(useHookHelper);
 
     act(() => {
       result.current[1](0);
@@ -126,7 +126,7 @@ describe('nullable state type', () => {
 
   it('resolves a new promise when the state is set', async () => {
     let resolved = false;
-    const { result } = renderHook(hookHelper);
+    const { result } = renderHook(useHookHelper);
 
     result.current[0].then(() => {
       resolved = true;

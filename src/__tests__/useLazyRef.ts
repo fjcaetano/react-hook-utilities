@@ -3,18 +3,18 @@ import { renderHook } from '@testing-library/react-hooks';
 import { useLazyRef } from '..';
 
 const callbackFn = jest.fn();
-const mockHook = () => useLazyRef(callbackFn);
+const useMockHook = () => useLazyRef(callbackFn);
 
 beforeEach(callbackFn.mockRestore);
 
 it('calls factory on first call', () => {
-  renderHook(mockHook);
+  renderHook(useMockHook);
 
   expect(callbackFn.mock.calls.length).toEqual(1);
 });
 
 it('does not call factory when value is unset', () => {
-  const { result, rerender } = renderHook(mockHook);
+  const { result, rerender } = renderHook(useMockHook);
   expect(callbackFn.mock.calls.length).toEqual(1);
 
   // act
@@ -28,7 +28,7 @@ describe('change in current value', () => {
   const assertChangeCurrentValue = () => {
     // initial value
     callbackFn.mockReturnValue(0);
-    const { result } = renderHook(mockHook);
+    const { result } = renderHook(useMockHook);
 
     expect(result.current.current).toEqual(0);
 

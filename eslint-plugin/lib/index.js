@@ -4,8 +4,7 @@
  */
 'use strict';
 
-import ExhaustiveDeps from './rules/ExaustiveDeps';
-
-export const rules = {
+const ExhaustiveDeps = require('./rules/ExaustiveDeps');
+exports.rules = {
   'exhaustive-deps': ExhaustiveDeps,
 };
