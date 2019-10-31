@@ -117,6 +117,16 @@ useDidUnmount(async () => {
 });
 ```
 
+### Use Lazy Ref
+
+Creates a mutable reference object from a factory function.
+
+```ts
+const ref = useLazyRef(() => new SomeObject());
+...
+ref.current = newObject;
+```
+
 # Typescript
 
 react-hook-utilities sees Typescript is a first-class citizen. The library is built for and around Typescript and you'll get bonus points for using it. Nonetheless, pure JavaScript files are also available if you're _that_ guy.
