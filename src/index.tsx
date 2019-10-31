@@ -150,7 +150,7 @@ export const useDidUnmount = (effect: () => void | Promise<void>) => {
  *
  * @param factory A function that returns the object to be referenced
  */
-export const useLazyRef = <T extends any, Dependencies extends readonly any[]>(
+export const useLazyRef = <T extends any>(
   factory: () => T,
 ): MutableRefObject<T> => {
   const initialValue = useRef<MutableRefObject<T> | undefined>(undefined);
