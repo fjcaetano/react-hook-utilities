@@ -99,7 +99,7 @@ Runs an effect when the component mounts:
 
 ```ts
 useDidMount(() => {
-  cnosole.log("I'm up!");
+  console.log("I'm up!");
 });
 ```
 
