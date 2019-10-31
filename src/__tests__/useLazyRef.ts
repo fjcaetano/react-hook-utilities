@@ -1,22 +1,11 @@
-import { renderHook, act } from '@testing-library/react-hooks';
+import { renderHook } from '@testing-library/react-hooks';
 
 import { useLazyRef } from '..';
 
-let callbackFn: jest.Mock;
-let initialProps: any;
-const thrownError = new Error('error');
+const callbackFn = jest.fn();
+const mockHook = () => useLazyRef(callbackFn);
 
-interface Props<T> {
-  factory?: () => T;
-}
-
-const mockHook = ({ factory = callbackFn }: Props<any> = {}) =>
-  useLazyRef(factory);
-
-beforeEach(() => {
-  callbackFn = jest.fn();
-  initialProps = { worker: callbackFn };
-});
+beforeEach(callbackFn.mockRestore);
 
 it('calls factory on first call', () => {
   renderHook(mockHook);
