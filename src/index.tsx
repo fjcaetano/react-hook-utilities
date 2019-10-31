@@ -4,6 +4,7 @@ import {
   useCallback,
   useState,
   useRef,
+  MutableRefObject,
 } from 'react';
 
 /**
@@ -142,4 +143,16 @@ export const useDidUnmount = (effect: () => void | Promise<void>) => {
     },
     [],
   );
+};
+
+/**
+ * Creates a mutable reference object from a factory function.
+ *
+ * @param factory A function that returns the object to be referenced
+ */
+export const useLazyRef = <T extends any, Dependencies extends readonly any[]>(
+  factory: () => T,
+): MutableRefObject<T> => {
+  const initialValue = useRef<MutableRefObject<T> | undefined>(undefined);
+  return initialValue.current || (initialValue.current = useRef(factory()));
 };
