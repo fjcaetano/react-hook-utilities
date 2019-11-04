@@ -112,10 +112,13 @@ Executes an effect when the component unmounts. The effect may also be asynchron
 
 ```ts
 useDidUnmount(async () => {
-  await busyWork();
+  await busyWork(someState);
   console.log('heading out');
-});
+}, [someState]);
 ```
+
+Any dependencies used inside the effect must be declared, however, the effect is not called when the
+dependencies change. The effect is only called when the component is being unmounted.
 
 ### Use Lazy Ref
 

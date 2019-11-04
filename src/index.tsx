@@ -134,14 +134,32 @@ export const useDidMount = (
 /**
  * Runs an effect when the component gets unmounted
  *
+ * Any dependencies used inside the effect must be passed as argument, however, the effect is not
+ * called when the dependencies change. The effect is only called when the component is being
+ * unmounted.
+ *
  * @param effect the effect to be executed. May be asynchronous
+ * @param dependencies The effect's dependencies.
  */
-export const useDidUnmount = (effect: () => void | Promise<void>) => {
+export const useDidUnmount = <Dependencies extends readonly any[]>(
+  effect: () => void | Promise<void>,
+  dependencies?: Dependencies,
+) => {
+  const unmounting = useRef(false);
   useEffect(
     () => () => {
-      effect();
+      unmounting.current = true;
     },
     [],
+  );
+
+  useEffect(
+    () => () => {
+      if (unmounting.current) {
+        effect();
+      }
+    },
+    dependencies || [],
   );
 };
 
