@@ -153,6 +153,11 @@ export const useDidUnmount = (effect: () => void | Promise<void>) => {
 export const useLazyRef = <T extends any>(
   factory: () => T,
 ): MutableRefObject<T> => {
-  const initialValue = useRef<MutableRefObject<T> | undefined>(undefined);
-  return initialValue.current || (initialValue.current = useRef(factory()));
+  const ref = useRef<T | undefined>(undefined);
+
+  if (ref.current === void 0 || ref.current === null) {
+    ref.current = factory();
+  }
+
+  return ref as MutableRefObject<T>;
 };
