@@ -134,6 +134,8 @@ ref.current = newObject;
 
 react-hook-utilities sees Typescript is a first-class citizen. The library is built for and around Typescript and you'll get bonus points for using it. Nonetheless, pure JavaScript files are also available if you're _that_ guy.
 
+# [Full Documentation](https://fjcaetano.github.com/react-hook-utilities)
+
 [1]: https://github.com/fjcaetano/react-hook-utilities/workflows/Node%20CI/badge.svg
 [2]: https://codecov.io/gh/fjcaetano/react-hook-utilities/branch/master/graph/badge.svg
 [3]: https://img.shields.io/npm/v/react-hook-utilities
