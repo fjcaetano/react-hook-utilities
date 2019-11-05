@@ -22,7 +22,8 @@
     "build": "tsc && prettier --check 'dist/**/*' --write",
     "test": "jest --coverage",
     "lint": "prettier --check 'src/**/*'",
-    "docs": "typedoc --out docs/$npm_package_version && scripts/gen-docs-index.sh $npm_package_version"
+    "docs": "typedoc --out docs/$npm_package_version && scripts/gen-docs-index.sh $npm_package_version",
+    "version": "conventional-changelog -p angular -i CHANGELOG.md -s && git add CHANGELOG.md"
   },
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -38,6 +39,7 @@
     "@types/jest": "^24.0.18",
     "@types/react": "^16.9.2",
     "commitlint": "^8.2.0",
+    "conventional-changelog-cli": "^2.0.25",
     "husky": "^3.0.5",
     "jest": "^24.9.0",
     "prettier": "^1.18.2",
