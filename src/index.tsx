@@ -8,6 +8,41 @@ import {
 } from 'react';
 
 /**
+ * The return of a [[useWorkerLoad]] call.
+ *
+ * See [[RetryWorkerError]] for errors.
+ *
+ * @typeparam Data The worker's return type
+ */
+interface WorkerLoad<Data> {
+  /** Indicates if the worker is running */
+  isLoading: boolean;
+
+  /** The worker's returned value stored in a state */
+  data: Data;
+
+  /** An optional object that contains any thrown errors, if any, and a retry function */
+  error?: RetryWorkerError;
+
+  /** Sets [[isLoading]] state manually */
+  setIsLoading: (_: boolean) => void;
+
+  /** Sets [[error]] state manually */
+  setError: (_: Error | undefined) => void;
+}
+
+/**
+ * Encapsulates [[useWorkerLoad]]'s errors and retry function
+ */
+interface RetryWorkerError {
+  /** The error thrown by the worker's call */
+  value: Error;
+
+  /** Calls the worker again */
+  retry: () => Promise<void>;
+}
+
+/**
  * Executes an asynchronous effect
  *
  * See [[useAsyncLayoutEffect]] for asynchronous layout effects
@@ -52,6 +87,7 @@ export const useAsyncLayoutEffect = (
  * @param dependencies The callback dependencies.
  * @typeparam TArgs The worker's arguments' types
  * @typeparam TRet The worker's return type
+ * @category Workers
  */
 export const useWorker = <TArgs extends readonly any[], TRet>(
   worker: (...args: TArgs) => Promise<TRet>,
@@ -463,3 +499,61 @@ export const useLazyRef = <T extends any>(
 
   return ref as MutableRefObject<T>;
 };
+
+/**
+ * Starts loading a worker immediately and handle loading, error and result states.
+ *
+ * See [[useWorker]] for more details.
+ *
+ * @param worker An asynchronous function that returns data, which is saved into a state
+ * @typeparam Data The worker's return type
+ * @category Workers
+ */
+export function useWorkerLoad<Data>(
+  worker: () => Promise<Data | undefined>,
+): WorkerLoad<Data | undefined>;
+
+/**
+ * Starts loading a worker immediately and handle loading, error and result states.
+ *
+ * See [[useWorker]] for more details.
+ *
+ * @param worker An asynchronous function that returns data, which is saved into a state
+ * @param initialValue The data's initial value
+ * @typeparam Data The worker's return type
+ * @category Workers
+ */
+export function useWorkerLoad<Data>(
+  worker: () => Promise<Data>,
+  initialValue: Data,
+): WorkerLoad<Data>;
+
+export function useWorkerLoad<Data>(
+  worker: () => Promise<typeof initialValue>,
+  initialValue?: Data,
+): WorkerLoad<typeof initialValue> {
+  const [data, setData] = useState<typeof initialValue>(initialValue);
+  const {
+    isLoading,
+    error,
+    setError,
+    setIsLoading,
+    callback,
+  } = useWorker(async () => {
+    setData(await worker());
+  }, []);
+
+  // start loading immediately
+  useDidMount(callback);
+
+  return {
+    data,
+    isLoading,
+    setIsLoading,
+    setError,
+    error: error && {
+      value: error,
+      retry: callback,
+    },
+  };
+}
