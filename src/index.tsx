@@ -197,26 +197,37 @@ export const useLazyRef = <T extends any>(
   return ref as MutableRefObject<T>;
 };
 
-/**
- * Starts loading a worker immediately and handle loading, error and result states.
- *
- * See [[useWorker]] for more details
- *
- * @param worker An asynchronous function that returns data, which is saved into a state
- * @param initialValue The data's initial value. Optional when Data may be undefined
- */
-export const useWorkerLoad = <Data extends any>(
-  worker: () => Promise<Data>,
-  ...initialValue: Data extends undefined ? [] : [Data]
-): {
+type WorkerLoad<Data> = {
   isLoading: boolean;
   setIsLoading: (_: boolean) => void;
   setError: (_: Error | undefined) => void;
   error: Error | undefined;
   data: Data;
   retry: () => Promise<void>;
-} => {
-  const [data, setData] = useState<Data>(initialValue[0]);
+};
+
+export function useWorkerLoad<Data>(
+  worker: () => Promise<Data | undefined>,
+): WorkerLoad<Data | undefined>;
+
+export function useWorkerLoad<Data>(
+  worker: () => Promise<Data>,
+  initialValue: Data,
+): WorkerLoad<Data>;
+
+/**
+ * Starts loading a worker immediately and handle loading, error and result states.
+ *
+ * See [[useWorker]] for more details
+ *
+ * @param worker An asynchronous function that returns data, which is saved into a state
+ * @param initialValue The data's initial value
+ */
+export function useWorkerLoad<Data>(
+  worker: () => Promise<typeof initialValue>,
+  initialValue?: Data,
+): WorkerLoad<typeof initialValue> {
+  const [data, setData] = useState<typeof initialValue>(initialValue);
   const {
     isLoading,
     error,
@@ -238,4 +249,4 @@ export const useWorkerLoad = <Data extends any>(
     setError,
     retry: callback,
   };
-};
+}
