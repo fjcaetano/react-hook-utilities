@@ -187,3 +187,142 @@ describe('retry', () => {
     expect(result.current.data).toBe(val);
   });
 });
+
+/// These tests won't fail their execution, but the type-checking instead.
+describe('test types', () => {
+  type Assert<T, Expected> = T extends Expected
+    ? (Expected extends T ? true : never)
+    : never;
+
+  describe('`initialValue` is unset', () => {
+    it('infers `data` may be undefined when `worker` returns mandatory type', async () => {
+      const worker = async () => 'string';
+      const {
+        result: {
+          current: { data },
+        },
+        waitForNextUpdate,
+      } = renderHook(() => useWorkerLoad(worker));
+      await waitForNextUpdate();
+
+      const assert1: Assert<ReturnType<typeof worker>, Promise<string>> = true;
+      expect(assert1).toBe(true);
+
+      const assert2: Assert<typeof data, string | undefined> = true;
+      expect(assert2).toBe(true);
+    });
+
+    it('infers `data` is undefined when `worker` returns undefined type', async () => {
+      const worker = async () => undefined;
+      const {
+        result: {
+          current: { data },
+        },
+        waitForNextUpdate,
+      } = renderHook(() => useWorkerLoad(worker));
+      await waitForNextUpdate();
+
+      const assert1: Assert<
+        ReturnType<typeof worker>,
+        Promise<undefined>
+      > = true;
+      expect(assert1).toBe(true);
+
+      const assert2: Assert<typeof data, undefined> = true;
+      expect(assert2).toBe(true);
+    });
+
+    it('forces `data` to be undefined even when type is explicitly set', async () => {
+      const worker = async () => undefined;
+      const {
+        result: {
+          current: { data },
+        },
+        waitForNextUpdate,
+      } = renderHook(() => useWorkerLoad<number>(worker));
+      await waitForNextUpdate();
+
+      const assert1: Assert<
+        ReturnType<typeof worker>,
+        Promise<undefined>
+      > = true;
+      expect(assert1).toBe(true);
+
+      const assert2: Assert<typeof data, undefined> = true;
+      expect(assert2).toBe(true);
+    });
+  });
+
+  describe('has `initialValue`', () => {
+    it('infers `data` from `initialValue', async () => {
+      const worker = async () => 0;
+      const {
+        result: {
+          current: { data },
+        },
+        waitForNextUpdate,
+      } = renderHook(() => useWorkerLoad(worker, -1));
+      await waitForNextUpdate();
+
+      const assert1: Assert<ReturnType<typeof worker>, Promise<number>> = true;
+      expect(assert1).toBe(true);
+
+      const assert2: Assert<typeof data, number> = true;
+      expect(assert2).toBe(true);
+    });
+
+    it("infers `data` may be undefined from `worker`'s return type", async () => {
+      const worker = async () => undefined;
+      const {
+        result: {
+          current: { data },
+        },
+        waitForNextUpdate,
+      } = renderHook(() => useWorkerLoad(worker, -1 as number));
+      await waitForNextUpdate();
+
+      const assert1: Assert<
+        ReturnType<typeof worker>,
+        Promise<undefined>
+      > = true;
+      expect(assert1).toBe(true);
+
+      const assert2: Assert<typeof data, number | undefined> = true;
+      expect(assert2).toBe(true);
+    });
+
+    it('infers `data` might be undefined from `initialValue`s type', async () => {
+      const worker = async () => 1;
+      const {
+        result: {
+          current: { data },
+        },
+        waitForNextUpdate,
+      } = renderHook(() => useWorkerLoad(worker, undefined));
+      await waitForNextUpdate();
+
+      const assert1: Assert<ReturnType<typeof worker>, Promise<number>> = true;
+      expect(assert1).toBe(true);
+
+      const assert2: Assert<typeof data, number | undefined> = true;
+      expect(assert2).toBe(true);
+    });
+
+    it('allows `data` to be undefined when type is explicitly set', async () => {
+      const worker = async () => 0;
+      const {
+        result: {
+          current: { data },
+        },
+        waitForNextUpdate,
+      } = renderHook(() => useWorkerLoad<number | undefined>(worker, -1));
+      await waitForNextUpdate();
+
+      const assert1: Assert<ReturnType<typeof worker>, Promise<number>> = true;
+      expect(assert1).toBe(true);
+
+      const assert2: Assert<typeof data, number | undefined> = true;
+      expect(assert2).toBe(true);
+    });
+  });
+});
