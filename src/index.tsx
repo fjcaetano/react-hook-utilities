@@ -10,8 +10,11 @@ import {
 /**
  * Executes an asynchronous effect
  *
+ * See [[useAsyncLayoutEffect]] for asynchronous layout effects
+ *
  * @param effect the effect to be executed.
  * @param dependencies the effect's dependencies.
+ * @category Effects
  */
 export const useAsyncEffect = (
   effect: () => Promise<void>,
@@ -25,8 +28,11 @@ export const useAsyncEffect = (
 /**
  * Executes a layout effect asynchronously.
  *
+ * See [[useAsyncEffect]] for asynchronous non-layout effects
+ *
  * @param effect the layout effect to be executed.
  * @param dependencies the effect's dependencies.
+ * @category Effects
  */
 export const useAsyncLayoutEffect = (
   effect: () => Promise<void>,
@@ -44,6 +50,8 @@ export const useAsyncLayoutEffect = (
  *
  * @param worker The callback function that runs a promise.
  * @param dependencies The callback dependencies.
+ * @typeparam TArgs The worker's arguments' types
+ * @typeparam TRet The worker's return type
  */
 export const useWorker = <TArgs extends readonly any[], TRet>(
   worker: (...args: TArgs) => Promise<TRet>,
@@ -81,6 +89,9 @@ export const useWorker = <TArgs extends readonly any[], TRet>(
  *
  * @param effect The effect to be executed. Receives the dependencies' previous state as arguments.
  * @param dependencies The effect's dependencies.
+ * @typeparam Dependencies The dependencies' tuple type, which is type of the argument received when
+ * the effect is executed.
+ * @category Effects
  */
 export const useEffectUpdate = <Dependencies extends readonly any[]>(
   effect: (oldState: Dependencies) => void | (() => void),
@@ -103,6 +114,9 @@ export const useEffectUpdate = <Dependencies extends readonly any[]>(
  * returns a boolean defining if the effect should be executed.
  * @param effect The effect callback to be executed.
  * @param dependencies The effect's dependencies.
+ * @typeparam Dependencies The dependencies' tuple type, which is type of the argument received when
+ * the effect is evaluating if it should be executed.
+ * @category Effects
  */
 export const useConditionalEffect = <Dependencies extends readonly any[]>(
   evalCondition: (oldState: Dependencies) => boolean,
@@ -119,6 +133,7 @@ export const useConditionalEffect = <Dependencies extends readonly any[]>(
  * Runs an effect when the component gets mounted.
  *
  * @param effect the effect to be executed. May be asynchronous
+ * @category Component Lifecycle
  */
 export const useDidMount = (
   effect: () => (() => void) | void | Promise<void>,
@@ -140,6 +155,7 @@ export const useDidMount = (
  *
  * @param effect the effect to be executed. May be asynchronous
  * @param dependencies The effect's dependencies.
+ * @category Component Lifecycle
  */
 export const useDidUnmount = (
   effect: () => void | Promise<void>,
@@ -167,6 +183,7 @@ export const useDidUnmount = (
  * Creates a mutable reference object from a factory function.
  *
  * @param factory A function that returns the object to be referenced
+ * @typeparam T The reference's type
  */
 export const useLazyRef = <T extends any>(
   factory: () => T,
