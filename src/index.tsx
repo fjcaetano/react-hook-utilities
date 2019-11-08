@@ -141,9 +141,9 @@ export const useDidMount = (
  * @param effect the effect to be executed. May be asynchronous
  * @param dependencies The effect's dependencies.
  */
-export const useDidUnmount = <Dependencies extends readonly any[]>(
+export const useDidUnmount = (
   effect: () => void | Promise<void>,
-  dependencies?: Dependencies,
+  dependencies?: readonly any[],
 ) => {
   const unmounting = useRef(false);
   useEffect(
