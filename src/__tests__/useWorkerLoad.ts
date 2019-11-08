@@ -92,7 +92,8 @@ it('stops loading on failure and returns the error', async () => {
 
   await waitForNextUpdate();
 
-  expect(result.current.error).toBe(thrownError);
+  expect(result.current.error?.value).toBe(thrownError);
+  expect(result.current.error?.retry).not.toBeUndefined();
   expect(result.current.isLoading).toEqual(false);
 });
 
@@ -119,7 +120,8 @@ it('can set error', async () => {
     result.current.setError(thrownError);
   });
 
-  expect(result.current.error).toEqual(thrownError);
+  expect(result.current.error?.value).toEqual(thrownError);
+  expect(result.current.error?.retry).not.toBeUndefined();
 });
 
 it('can set isLoading', async () => {
@@ -138,6 +140,7 @@ it('can set isLoading', async () => {
 
 describe('retry', () => {
   it('sets loading true', async () => {
+    callbackFn.mockRejectedValue(thrownError);
     const { result, waitForNextUpdate } = renderHook(useHookHelper, {
       initialProps,
     });
@@ -146,7 +149,7 @@ describe('retry', () => {
     expect(result.current.isLoading).toBe(false);
 
     act(() => {
-      result.current.retry();
+      result.current.error!.retry();
     });
 
     expect(result.current.isLoading).toBe(true);
@@ -162,9 +165,9 @@ describe('retry', () => {
     });
 
     await waitForNextUpdate();
-    expect(result.current.error).toBe(thrownError);
+    expect(result.current.error?.value).toBe(thrownError);
 
-    await act(result.current.retry);
+    await act(result.current.error!.retry);
 
     expect(result.current.error).toBeUndefined();
   });
@@ -179,19 +182,22 @@ describe('retry', () => {
     });
 
     await waitForNextUpdate();
-    expect(result.current.error).toBe(thrownError);
+    expect(result.current.error?.value).toBe(thrownError);
     expect(result.current.data).toBeUndefined();
 
-    await act(result.current.retry);
+    await act(result.current.error!.retry);
 
     expect(result.current.data).toBe(val);
+    expect(result.current.error).toBeUndefined();
   });
 });
 
 /// These tests won't fail their execution, but the type-checking instead.
 describe('test types', () => {
   type Assert<T, Expected> = T extends Expected
-    ? (Expected extends T ? true : never)
+    ? Expected extends T
+      ? true
+      : never
     : never;
 
   describe('`initialValue` is unset', () => {

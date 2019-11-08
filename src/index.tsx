@@ -8,6 +8,41 @@ import {
 } from 'react';
 
 /**
+ * The return of a [[useWorkerLoad]] call.
+ *
+ * See [[RetryWorkerError]] for errors.
+ *
+ * @typeparam Data The worker's return type
+ */
+interface WorkerLoad<Data> {
+  /** Indicates if the worker is running */
+  isLoading: boolean;
+
+  /** The worker's returned value stored in a state */
+  data: Data;
+
+  /** An optional object that contains any thrown errors, if any, and a retry function */
+  error?: RetryWorkerError;
+
+  /** Sets [[isLoading]] state manually */
+  setIsLoading: (_: boolean) => void;
+
+  /** Sets [[error]] state manually */
+  setError: (_: Error | undefined) => void;
+}
+
+/**
+ * Encapsulates [[useWorkerLoad]]'s errors and retry function
+ */
+interface RetryWorkerError {
+  /** The error thrown by the worker's call */
+  value: Error;
+
+  /** Calls the worker again */
+  retry: () => Promise<void>;
+}
+
+/**
  * Executes an asynchronous effect
  *
  * See [[useAsyncLayoutEffect]] for asynchronous layout effects
@@ -52,6 +87,7 @@ export const useAsyncLayoutEffect = (
  * @param dependencies The callback dependencies.
  * @typeparam TArgs The worker's arguments' types
  * @typeparam TRet The worker's return type
+ * @category Workers
  */
 export const useWorker = <TArgs extends readonly any[], TRet>(
   worker: (...args: TArgs) => Promise<TRet>,
@@ -197,15 +233,6 @@ export const useLazyRef = <T extends any>(
   return ref as MutableRefObject<T>;
 };
 
-type WorkerLoad<Data> = {
-  isLoading: boolean;
-  setIsLoading: (_: boolean) => void;
-  setError: (_: Error | undefined) => void;
-  error: Error | undefined;
-  data: Data;
-  retry: () => Promise<void>;
-};
-
 export function useWorkerLoad<Data>(
   worker: () => Promise<Data | undefined>,
 ): WorkerLoad<Data | undefined>;
@@ -222,6 +249,8 @@ export function useWorkerLoad<Data>(
  *
  * @param worker An asynchronous function that returns data, which is saved into a state
  * @param initialValue The data's initial value
+ * @typeparam Data The worker's return type
+ * @category Workers
  */
 export function useWorkerLoad<Data>(
   worker: () => Promise<typeof initialValue>,
@@ -244,9 +273,11 @@ export function useWorkerLoad<Data>(
   return {
     data,
     isLoading,
-    error,
     setIsLoading,
     setError,
-    retry: callback,
+    error: error && {
+      value: error,
+      retry: callback,
+    },
   };
 }
