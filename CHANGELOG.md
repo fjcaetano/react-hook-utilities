@@ -1,3 +1,21 @@
+# [0.3.0-alpha1](https://github.com/fjcaetano/react-hook-utilities/compare/v0.2.1...v0.3.0-alpha1) (2019-11-11)
+
+
+### Bug Fixes
+
+* **Changelog:** build using conventional-changelog ([c862550](https://github.com/fjcaetano/react-hook-utilities/commit/c8625507eceb90bb9217db7941ff19b3cfda9702))
+* **useDidMount:** remove unnecessary type param ([e54171b](https://github.com/fjcaetano/react-hook-utilities/commit/e54171bcc40389bb16c54d9bf727cf6328021623))
+* **useDidUnmount:** call effect with updated dependencies ([0bbacaa](https://github.com/fjcaetano/react-hook-utilities/commit/0bbacaaf6321cd8a254be5c51c77425a9e2383cd)), closes [#8](https://github.com/fjcaetano/react-hook-utilities/issues/8)
+* **useWorkerLoad:** group error and retry into an optional attr ([a0eb7b8](https://github.com/fjcaetano/react-hook-utilities/commit/a0eb7b8f6969f020b3309b3fffb5202e20b5a19a))
+* **useWorkerLoad:** use function overloards for better typings ([637d788](https://github.com/fjcaetano/react-hook-utilities/commit/637d7884df498bce73fb2eb8a5f8cf1ae7472146))
+
+
+### Features
+
+* **useWorkerLoad:** add new hook ([6b53719](https://github.com/fjcaetano/react-hook-utilities/commit/6b53719525f370be0d0b54ef70121a08329cf62a)), closes [#11](https://github.com/fjcaetano/react-hook-utilities/issues/11)
+
+
+
 ## [0.2.1](https://github.com/fjcaetano/react-hook-utilities/compare/v0.2.0...v0.2.1) (2019-11-04)
 
 
