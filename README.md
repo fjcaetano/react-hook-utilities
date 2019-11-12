@@ -92,6 +92,28 @@ const { isLoading, error, result, callback } = useWorker(
 `isLoading` is set to true as soon as the callback is loaded and only returns to `false` when it
 ends or when an error happens. If an exception is thrown or a promise fails, `error` will be updated.
 
+### Worker Load
+
+This is a worker that starts loading immediately and stores the result in a state. Useful for
+loading data when you render a component:
+
+```ts
+const { isLoading, error, data } = useWorkerLoad(
+  async () => {
+    return await getUserName();
+  },
+  'no-name', // data's initial value
+);
+```
+
+If the worker fails, the error is returned in the `error` state with a retry function:
+
+```ts
+const { error } = useWorkerLoad(...);
+
+error?.value // the actual Error object
+error?.retry() // calls the worker again
+```
 
 ### Did Mount
 
