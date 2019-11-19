@@ -1,4 +1,4 @@
-react-hook-utilities [![Build Status][1]](https://github.com/fjcaetano/react-hook-utilities/actions) [![codecov][2]](https://codecov.io/gh/fjcaetano/react-hook-utilities) [![npm][3]](https://www.npmjs.com/package/react-hook-utilities)
+react-hook-utilities [![Build Status][1]](https://github.com/fjcaetano/react-hook-utilities/actions) [![codecov][2]](https://codecov.io/gh/fjcaetano/react-hook-utilities) [![PRs welcome][4]](https://github.com/fjcaetano/react-hook-utilities/pulls) [![npm][3]](https://www.npmjs.com/package/react-hook-utilities)
 ---
 
 A set of extraordinarily common React hooks.
@@ -139,3 +139,4 @@ react-hook-utilities sees Typescript is a first-class citizen. The library is bu
 [1]: https://github.com/fjcaetano/react-hook-utilities/workflows/Node%20CI/badge.svg
 [2]: https://codecov.io/gh/fjcaetano/react-hook-utilities/branch/master/graph/badge.svg
 [3]: https://img.shields.io/npm/v/react-hook-utilities
+[4]: https://img.shields.io/badge/PRs-welcome-brightgreen.svg
