@@ -19,7 +19,7 @@ jobs:
         CI: true
 
     - name: Generate changelog
-      run: echo "::set-env name=CHANGELOG::$(npx conventional-changelog -p angular -r 2)"
+      run: echo "::set-env name=INPUT_BODY::$(npx conventional-changelog -p angular -r 2)"
 
     - name: Create Github Release
       id: create_release
@@ -31,6 +31,5 @@ jobs:
         # release_name: Release ${{ github.ref }}
         tag_name: v0.3.0
         release_name: Release v0.3.0
-        body: ${{CHANGELOG}}
         draft: false
         prerelease: false
