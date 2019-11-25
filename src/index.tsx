@@ -234,20 +234,167 @@ export function useEffectUpdate<Dependencies extends readonly any[]>(
  * returns a boolean defining if the effect should be executed.
  * @param effect The effect callback to be executed.
  * @param dependencies The effect's dependencies.
+ */
+export function useConditionalEffect<T1>(
+  evalCondition: (oldState: [T1]) => boolean,
+  effect: () => (() => void) | void,
+  dependencies: [T1],
+): void;
+
+/**
+ * Conditionally executes an effect.
+ *
+ * @param evalCondition A function that receives the dependencies' previous state as argument and
+ * returns a boolean defining if the effect should be executed.
+ * @param effect The effect callback to be executed.
+ * @param dependencies The effect's dependencies.
+ */
+export function useConditionalEffect<T1, T2>(
+  evalCondition: (oldState: [T1, T2]) => boolean,
+  effect: () => (() => void) | void,
+  dependencies: [T1, T2],
+): void;
+
+/**
+ * Conditionally executes an effect.
+ *
+ * @param evalCondition A function that receives the dependencies' previous state as argument and
+ * returns a boolean defining if the effect should be executed.
+ * @param effect The effect callback to be executed.
+ * @param dependencies The effect's dependencies.
+ */
+export function useConditionalEffect<T1, T2, T3>(
+  evalCondition: (oldState: [T1, T2, T3]) => boolean,
+  effect: () => (() => void) | void,
+  dependencies: [T1, T2, T3],
+): void;
+
+/**
+ * Conditionally executes an effect.
+ *
+ * @param evalCondition A function that receives the dependencies' previous state as argument and
+ * returns a boolean defining if the effect should be executed.
+ * @param effect The effect callback to be executed.
+ * @param dependencies The effect's dependencies.
+ */
+export function useConditionalEffect<T1, T2, T3, T4>(
+  evalCondition: (oldState: [T1, T2, T3, T4]) => boolean,
+  effect: () => (() => void) | void,
+  dependencies: [T1, T2, T3, T4],
+): void;
+
+/**
+ * Conditionally executes an effect.
+ *
+ * @param evalCondition A function that receives the dependencies' previous state as argument and
+ * returns a boolean defining if the effect should be executed.
+ * @param effect The effect callback to be executed.
+ * @param dependencies The effect's dependencies.
+ */
+export function useConditionalEffect<T1, T2, T3, T4, T5>(
+  evalCondition: (oldState: [T1, T2, T3, T4, T5]) => boolean,
+  effect: () => (() => void) | void,
+  dependencies: [T1, T2, T3, T4, T5],
+): void;
+
+/**
+ * Conditionally executes an effect.
+ *
+ * @param evalCondition A function that receives the dependencies' previous state as argument and
+ * returns a boolean defining if the effect should be executed.
+ * @param effect The effect callback to be executed.
+ * @param dependencies The effect's dependencies.
+ */
+export function useConditionalEffect<T1, T2, T3, T4, T5, T6>(
+  evalCondition: (oldState: [T1, T2, T3, T4, T5, T6]) => boolean,
+  effect: () => (() => void) | void,
+  dependencies: [T1, T2, T3, T4, T5, T6],
+): void;
+
+/**
+ * Conditionally executes an effect.
+ *
+ * @param evalCondition A function that receives the dependencies' previous state as argument and
+ * returns a boolean defining if the effect should be executed.
+ * @param effect The effect callback to be executed.
+ * @param dependencies The effect's dependencies.
+ */
+export function useConditionalEffect<T1, T2, T3, T4, T5, T6, T7>(
+  evalCondition: (oldState: [T1, T2, T3, T4, T5, T6, T7]) => boolean,
+  effect: () => (() => void) | void,
+  dependencies: [T1, T2, T3, T4, T5, T6, T7],
+): void;
+
+/**
+ * Conditionally executes an effect.
+ *
+ * @param evalCondition A function that receives the dependencies' previous state as argument and
+ * returns a boolean defining if the effect should be executed.
+ * @param effect The effect callback to be executed.
+ * @param dependencies The effect's dependencies.
+ */
+export function useConditionalEffect<T1, T2, T3, T4, T5, T6, T7, T8>(
+  evalCondition: (oldState: [T1, T2, T3, T4, T5, T6, T7, T8]) => boolean,
+  effect: () => (() => void) | void,
+  dependencies: [T1, T2, T3, T4, T5, T6, T7, T8],
+): void;
+
+/**
+ * Conditionally executes an effect.
+ *
+ * @param evalCondition A function that receives the dependencies' previous state as argument and
+ * returns a boolean defining if the effect should be executed.
+ * @param effect The effect callback to be executed.
+ * @param dependencies The effect's dependencies.
+ */
+export function useConditionalEffect<T1, T2, T3, T4, T5, T6, T7, T8, T9>(
+  evalCondition: (oldState: [T1, T2, T3, T4, T5, T6, T7, T8, T9]) => boolean,
+  effect: () => (() => void) | void,
+  dependencies: [T1, T2, T3, T4, T5, T6, T7, T8, T9],
+): void;
+
+/**
+ * Conditionally executes an effect.
+ *
+ * @param evalCondition A function that receives the dependencies' previous state as argument and
+ * returns a boolean defining if the effect should be executed.
+ * @param effect The effect callback to be executed.
+ * @param dependencies The effect's dependencies.
+ */
+export function useConditionalEffect<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>(
+  evalCondition: (
+    oldState: [T1, T2, T3, T4, T5, T6, T7, T8, T9, T10],
+  ) => boolean,
+  effect: () => (() => void) | void,
+  dependencies: [T1, T2, T3, T4, T5, T6, T7, T8, T9, T10],
+): void;
+
+/**
+ * Conditionally executes an effect.
+ *
+ * @param evalCondition A function that receives the dependencies' previous state as argument and
+ * returns a boolean defining if the effect should be executed.
+ * @param effect The effect callback to be executed.
+ * @param dependencies The effect's dependencies.
  * @typeparam Dependencies The dependencies' tuple type, which is type of the argument received when
  * the effect is evaluating if it should be executed.
  * @category Effects
  */
-export const useConditionalEffect = <Dependencies extends readonly any[]>(
+export function useConditionalEffect<Dependencies extends readonly any[]>(
   evalCondition: (oldState: Dependencies) => boolean,
   effect: () => (() => void) | void,
   dependencies: Dependencies,
-) => {
+): void;
+export function useConditionalEffect<Dependencies extends readonly any[]>(
+  evalCondition: (oldState: Dependencies) => boolean,
+  effect: () => (() => void) | void,
+  dependencies: Dependencies,
+): void {
   useEffectUpdate(
     oldState => (evalCondition(oldState) ? effect() : undefined),
     dependencies,
   );
-};
+}
 
 /**
  * Runs an effect when the component gets mounted.
