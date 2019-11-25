@@ -89,14 +89,134 @@ export const useWorker = <TArgs extends readonly any[], TRet>(
  *
  * @param effect The effect to be executed. Receives the dependencies' previous state as arguments.
  * @param dependencies The effect's dependencies.
+ */
+export function useEffectUpdate<T1>(
+  effect: (oldState: [T1]) => void | (() => void),
+  dependencies: [T1],
+): void;
+
+/**
+ * Executes a effect and sends to its callback the previous state.
+ *
+ * @param effect The effect to be executed. Receives the dependencies' previous state as arguments.
+ * @param dependencies The effect's dependencies.
+ */
+export function useEffectUpdate<T1, T2>(
+  effect: (oldState: [T1, T2]) => void | (() => void),
+  dependencies: [T1, T2],
+): void;
+
+/**
+ * Executes a effect and sends to its callback the previous state.
+ *
+ * @param effect The effect to be executed. Receives the dependencies' previous state as arguments.
+ * @param dependencies The effect's dependencies.
+ */
+export function useEffectUpdate<T1, T2, T3>(
+  effect: (oldState: [T1, T2, T3]) => void | (() => void),
+  dependencies: [T1, T2, T3],
+): void;
+
+/**
+ * Executes a effect and sends to its callback the previous state.
+ *
+ * @param effect The effect to be executed. Receives the dependencies' previous state as arguments.
+ * @param dependencies The effect's dependencies.
+ * @category Effects
+ */
+export function useEffectUpdate<T1, T2, T3, T4>(
+  effect: (oldState: [T1, T2, T3, T4]) => void | (() => void),
+  dependencies: [T1, T2, T3, T4],
+): void;
+
+/**
+ * Executes a effect and sends to its callback the previous state.
+ *
+ * @param effect The effect to be executed. Receives the dependencies' previous state as arguments.
+ * @param dependencies The effect's dependencies.
+ */
+export function useEffectUpdate<T1, T2, T3, T4, T5>(
+  effect: (oldState: [T1, T2, T3, T4, T5]) => void | (() => void),
+  dependencies: [T1, T2, T3, T4, T5],
+): void;
+
+/**
+ * Executes a effect and sends to its callback the previous state.
+ *
+ * @param effect The effect to be executed. Receives the dependencies' previous state as arguments.
+ * @param dependencies The effect's dependencies.
+ */
+export function useEffectUpdate<T1, T2, T3, T4, T5, T6>(
+  effect: (oldState: [T1, T2, T3, T4, T5, T6]) => void | (() => void),
+  dependencies: [T1, T2, T3, T4, T5, T6],
+): void;
+
+/**
+ * Executes a effect and sends to its callback the previous state.
+ *
+ * @param effect The effect to be executed. Receives the dependencies' previous state as arguments.
+ * @param dependencies The effect's dependencies.
+ */
+export function useEffectUpdate<T1, T2, T3, T4, T5, T6, T7>(
+  effect: (oldState: [T1, T2, T3, T4, T5, T6, T7]) => void | (() => void),
+  dependencies: [T1, T2, T3, T4, T5, T6, T7],
+): void;
+
+/**
+ * Executes a effect and sends to its callback the previous state.
+ *
+ * @param effect The effect to be executed. Receives the dependencies' previous state as arguments.
+ * @param dependencies The effect's dependencies.
+ */
+export function useEffectUpdate<T1, T2, T3, T4, T5, T6, T7, T8>(
+  effect: (oldState: [T1, T2, T3, T4, T5, T6, T7, T8]) => void | (() => void),
+  dependencies: [T1, T2, T3, T4, T5, T6, T7, T8],
+): void;
+
+/**
+ * Executes a effect and sends to its callback the previous state.
+ *
+ * @param effect The effect to be executed. Receives the dependencies' previous state as arguments.
+ * @param dependencies The effect's dependencies.
+ */
+export function useEffectUpdate<T1, T2, T3, T4, T5, T6, T7, T8, T9>(
+  effect: (
+    oldState: [T1, T2, T3, T4, T5, T6, T7, T8, T9],
+  ) => void | (() => void),
+  dependencies: [T1, T2, T3, T4, T5, T6, T7, T8, T9],
+): void;
+
+/**
+ * Executes a effect and sends to its callback the previous state.
+ *
+ * @param effect The effect to be executed. Receives the dependencies' previous state as arguments.
+ * @param dependencies The effect's dependencies.
+ */
+export function useEffectUpdate<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>(
+  effect: (
+    oldState: [T1, T2, T3, T4, T5, T6, T7, T8, T9, T10],
+  ) => void | (() => void),
+  dependencies: [T1, T2, T3, T4, T5, T6, T7, T8, T9, T10],
+): void;
+
+/**
+ * Executes a effect and sends to its callback the previous state.
+ *
+ * @param effect The effect to be executed. Receives the dependencies' previous state as arguments.
+ * @param dependencies The effect's dependencies.
  * @typeparam Dependencies The dependencies' tuple type, which is type of the argument received when
  * the effect is executed.
  * @category Effects
  */
-export const useEffectUpdate = <Dependencies extends readonly any[]>(
+export function useEffectUpdate<Dependencies extends readonly any[]>(
   effect: (oldState: Dependencies) => void | (() => void),
   dependencies: Dependencies,
-) => {
+): void;
+
+export function useEffectUpdate<Dependencies extends readonly any[]>(
+  effect: (oldState: Dependencies) => void | (() => void),
+  dependencies: Dependencies,
+): void {
   const oldState = useRef<Dependencies>([] as any);
   useEffect(() => {
     try {
@@ -105,7 +225,7 @@ export const useEffectUpdate = <Dependencies extends readonly any[]>(
       oldState.current = dependencies;
     }
   }, dependencies);
-};
+}
 
 /**
  * Conditionally executes an effect.
