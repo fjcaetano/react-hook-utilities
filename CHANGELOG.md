@@ -1,3 +1,21 @@
+# [0.3.0](https://github.com/fjcaetano/react-hook-utilities/compare/v0.2.1...v0.3.0) (2019-11-25)
+
+
+### Bug Fixes
+
+* **Changelog:** build using conventional-changelog ([c862550](https://github.com/fjcaetano/react-hook-utilities/commit/c8625507eceb90bb9217db7941ff19b3cfda9702))
+* **useConditionalEffect:** add overloads with generic types ([a67b9c0](https://github.com/fjcaetano/react-hook-utilities/commit/a67b9c07298d90462e8c1f8b5a5229a0c51c16c0)), closes [#14](https://github.com/fjcaetano/react-hook-utilities/issues/14)
+* **useDidMount:** remove unnecessary type param ([e54171b](https://github.com/fjcaetano/react-hook-utilities/commit/e54171bcc40389bb16c54d9bf727cf6328021623))
+* **useDidUnmount:** call effect with updated dependencies ([0bbacaa](https://github.com/fjcaetano/react-hook-utilities/commit/0bbacaaf6321cd8a254be5c51c77425a9e2383cd)), closes [#8](https://github.com/fjcaetano/react-hook-utilities/issues/8)
+* **useEffectUpdate:** add overloads with generic types ([80ea3d0](https://github.com/fjcaetano/react-hook-utilities/commit/80ea3d073bf2c41267c58c88ff1aa9a30b39683c)), closes [#14](https://github.com/fjcaetano/react-hook-utilities/issues/14)
+
+
+### Features
+
+* **useWorkerLoad:** add new hook ([4d91e5b](https://github.com/fjcaetano/react-hook-utilities/commit/4d91e5b3aacbf63922a56c4b8d7df33a89210171)), closes [#11](https://github.com/fjcaetano/react-hook-utilities/issues/11)
+
+
+
 ## [0.2.1](https://github.com/fjcaetano/react-hook-utilities/compare/v0.2.0...v0.2.1) (2019-11-04)
 
 
