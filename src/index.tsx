@@ -99,21 +99,30 @@ export const useWorker = <TArgs extends readonly any[], TRet>(
   error: Error | undefined;
   callback: (...args: TArgs) => Promise<TRet | undefined>;
 } => {
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [error, setError] = useState<Error | undefined>(undefined);
+  const [{ isLoading, error }, setState] = useState({
+    isLoading: false,
+    error: undefined as Error | undefined,
+  });
+
+  const setError = useCallback((error: Error | undefined) => {
+    setState(s => ({ ...s, error }));
+  }, []);
+
+  const setIsLoading = useCallback((isLoading: boolean) => {
+    setState(s => ({ ...s, isLoading }));
+  }, []);
+
   const callback = useCallback(async (...args: TArgs): Promise<
     TRet | undefined
   > => {
     try {
       setIsLoading(true);
       const result = await worker(...args);
-      setIsLoading(false);
-      setError(undefined);
+      setState({ isLoading: false, error: undefined });
 
       return result;
-    } catch (e) {
-      setIsLoading(false);
-      setError(e);
+    } catch (error) {
+      setState({ isLoading: false, error });
     }
   }, dependencies);
 
