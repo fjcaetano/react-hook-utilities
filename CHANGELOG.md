@@ -1,3 +1,17 @@
+# [1.0.0-alpha1](https://github.com/fjcaetano/react-hook-utilities/compare/v0.3.0...v1.0.0-alpha1) (2019-12-03)
+
+
+### Bug Fixes
+
+* **useWorker:** prevent multiple renders triggered by update ([9f1ee5f](https://github.com/fjcaetano/react-hook-utilities/commit/9f1ee5f12eead6f19b04717a6bf952fa8b11b27a)), closes [#16](https://github.com/fjcaetano/react-hook-utilities/issues/16)
+
+
+### Features
+
+* **ESLint:** add ESLint rule to parse hooks ([1880603](https://github.com/fjcaetano/react-hook-utilities/commit/188060324733204f12631140dab8c585b463f867))
+
+
+
 # [0.3.0](https://github.com/fjcaetano/react-hook-utilities/compare/v0.2.1...v0.3.0) (2019-11-25)
 
 
