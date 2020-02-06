@@ -152,6 +152,29 @@ const ref = useLazyRef(() => new SomeObject());
 ref.current = newObject;
 ```
 
+### Use Promised State
+
+A state that only resolves after setting truthy values.
+
+ If you need to use the promise as a dependency of another hook, use its [ValuablePromise.value](https://github.com/fjcaetano/react-hook-utilities/blob/master/src/index.tsx#L52) attribute as the dependency:
+ ``` ts
+ const [name, setName, rejectName] = usePromisedState();
+ useAsyncEffect(async () => {
+   await name;
+   ...
+ }, [name.value]); // use the promise's `value` as dependency
+
+ const someCallback = useCallback(async () => {
+   try {
+    const name = await fetch(API.getName);
+    setName(name);
+   } catch(e) {
+     rejectName(e);
+   }
+ }, []);
+ ```
+
+
 # Typescript
 
 react-hook-utilities sees Typescript is a first-class citizen. The library is built for and around Typescript and you'll get bonus points for using it. Nonetheless, pure JavaScript files are also available if you're _that_ guy.
