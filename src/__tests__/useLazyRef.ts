@@ -13,6 +13,17 @@ it('calls factory on first call', () => {
   expect(callbackFn.mock.calls.length).toEqual(1);
 });
 
+it('does not call factory when value is unset', () => {
+  const { result, rerender } = renderHook(mockHook);
+  expect(callbackFn.mock.calls.length).toEqual(1);
+
+  // act
+  result.current.current = undefined;
+  rerender();
+
+  expect(callbackFn.mock.calls.length).toEqual(1);
+});
+
 describe('change in current value', () => {
   const assertChangeCurrentValue = () => {
     // initial value

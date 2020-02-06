@@ -521,10 +521,12 @@ export const useDidUnmount = (
 export const useLazyRef = <T extends any>(
   factory: () => T,
 ): MutableRefObject<T> => {
+  const didInit = useRef(false);
   const ref = useRef<T | undefined>(undefined);
 
-  if (ref.current === void 0 || ref.current === null) {
+  if (!didInit.current) {
     ref.current = factory();
+    didInit.current = true;
   }
 
   return ref as MutableRefObject<T>;
