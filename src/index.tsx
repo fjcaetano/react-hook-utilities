@@ -300,6 +300,7 @@ export function useEffectUpdate<Dependencies extends readonly any[]>(
  * returns a boolean defining if the effect should be executed.
  * @param effect The effect callback to be executed.
  * @param dependencies The effect's dependencies.
+ * @hidden
  */
 export function useConditionalEffect<T1>(
   evalCondition: (oldState: [T1]) => boolean,
@@ -314,6 +315,7 @@ export function useConditionalEffect<T1>(
  * returns a boolean defining if the effect should be executed.
  * @param effect The effect callback to be executed.
  * @param dependencies The effect's dependencies.
+ * @hidden
  */
 export function useConditionalEffect<T1, T2>(
   evalCondition: (oldState: [T1, T2]) => boolean,
@@ -328,6 +330,7 @@ export function useConditionalEffect<T1, T2>(
  * returns a boolean defining if the effect should be executed.
  * @param effect The effect callback to be executed.
  * @param dependencies The effect's dependencies.
+ * @hidden
  */
 export function useConditionalEffect<T1, T2, T3>(
   evalCondition: (oldState: [T1, T2, T3]) => boolean,
@@ -342,6 +345,7 @@ export function useConditionalEffect<T1, T2, T3>(
  * returns a boolean defining if the effect should be executed.
  * @param effect The effect callback to be executed.
  * @param dependencies The effect's dependencies.
+ * @hidden
  */
 export function useConditionalEffect<T1, T2, T3, T4>(
   evalCondition: (oldState: [T1, T2, T3, T4]) => boolean,
@@ -356,6 +360,7 @@ export function useConditionalEffect<T1, T2, T3, T4>(
  * returns a boolean defining if the effect should be executed.
  * @param effect The effect callback to be executed.
  * @param dependencies The effect's dependencies.
+ * @hidden
  */
 export function useConditionalEffect<T1, T2, T3, T4, T5>(
   evalCondition: (oldState: [T1, T2, T3, T4, T5]) => boolean,
@@ -370,6 +375,7 @@ export function useConditionalEffect<T1, T2, T3, T4, T5>(
  * returns a boolean defining if the effect should be executed.
  * @param effect The effect callback to be executed.
  * @param dependencies The effect's dependencies.
+ * @hidden
  */
 export function useConditionalEffect<T1, T2, T3, T4, T5, T6>(
   evalCondition: (oldState: [T1, T2, T3, T4, T5, T6]) => boolean,
@@ -384,6 +390,7 @@ export function useConditionalEffect<T1, T2, T3, T4, T5, T6>(
  * returns a boolean defining if the effect should be executed.
  * @param effect The effect callback to be executed.
  * @param dependencies The effect's dependencies.
+ * @hidden
  */
 export function useConditionalEffect<T1, T2, T3, T4, T5, T6, T7>(
   evalCondition: (oldState: [T1, T2, T3, T4, T5, T6, T7]) => boolean,
@@ -398,6 +405,7 @@ export function useConditionalEffect<T1, T2, T3, T4, T5, T6, T7>(
  * returns a boolean defining if the effect should be executed.
  * @param effect The effect callback to be executed.
  * @param dependencies The effect's dependencies.
+ * @hidden
  */
 export function useConditionalEffect<T1, T2, T3, T4, T5, T6, T7, T8>(
   evalCondition: (oldState: [T1, T2, T3, T4, T5, T6, T7, T8]) => boolean,
@@ -412,6 +420,7 @@ export function useConditionalEffect<T1, T2, T3, T4, T5, T6, T7, T8>(
  * returns a boolean defining if the effect should be executed.
  * @param effect The effect callback to be executed.
  * @param dependencies The effect's dependencies.
+ * @hidden
  */
 export function useConditionalEffect<T1, T2, T3, T4, T5, T6, T7, T8, T9>(
   evalCondition: (oldState: [T1, T2, T3, T4, T5, T6, T7, T8, T9]) => boolean,
@@ -426,6 +435,7 @@ export function useConditionalEffect<T1, T2, T3, T4, T5, T6, T7, T8, T9>(
  * returns a boolean defining if the effect should be executed.
  * @param effect The effect callback to be executed.
  * @param dependencies The effect's dependencies.
+ * @hidden
  */
 export function useConditionalEffect<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>(
   evalCondition: (
