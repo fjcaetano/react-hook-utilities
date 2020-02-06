@@ -43,6 +43,18 @@ interface RetryWorkerError {
 }
 
 /**
+ * A Promise that exposes it's resolvable value as an optional attribute
+ *
+ * See [[usePromisedState]] for more details.
+ *
+ * @typeparam T The promise's type
+ */
+export interface ValuablePromise<T> extends Promise<T> {
+  /** The promise's resolved value */
+  value?: T;
+}
+
+/**
  * Executes an asynchronous effect
  *
  * See [[useAsyncLayoutEffect]] for asynchronous layout effects
@@ -566,3 +578,51 @@ export function useWorkerLoad<Data>(
     },
   };
 }
+
+/**
+ * A state that only resolves after setting truthy values.
+ *
+ * If you need to use the promise as a dependency of another hook, use its [[ValuablePromise.value]] attribute as the dependency:
+ * ``` ts
+ * const [promise] = usePromisedState();
+ * useEffect(() => {
+ *   ...
+ * }, [promise.value]);
+ * ```
+ *
+ * See [[ValuablePromise]] for more details.
+ *
+ * @returns
+ *  0. A [[ValuablePromise]] in the first element of the tuple.
+ *  1. A state setter in the second element of the tuple, that will resolve any pending promises.
+ * @typeparam T The promise's type
+ */
+export const usePromisedState = <T,>(): [
+  ValuablePromise<T>,
+  (_: T) => void,
+] => {
+  let resolve: (v: T) => void;
+  const createPromise = (value?: T) => {
+    const result: ValuablePromise<T> = new Promise<T>(r => {
+      resolve = r;
+      if (value) {
+        r(value);
+      }
+    });
+    result.value = value;
+    return result;
+  };
+
+  const [state, setState] = useState(createPromise);
+  return [
+    state,
+    useCallback((newValue: T) => {
+      if (!!newValue) {
+        resolve(newValue);
+        state.value = newValue;
+      }
+
+      setState(createPromise(newValue));
+    }, []),
+  ];
+};
