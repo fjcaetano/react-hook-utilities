@@ -1,6 +1,7 @@
 import { renderHook, act } from '@testing-library/react-hooks';
 
-import { useWorkerLoad } from '..';
+import { useWorkerState } from '..';
+import { useState } from 'react';
 
 let callbackFn: jest.Mock;
 let initialProps: any;
@@ -12,7 +13,7 @@ beforeEach(() => {
 });
 
 const useHookHelper = ({ worker, initialValue }: any) =>
-  useWorkerLoad(worker, initialValue);
+  useWorkerState(worker, [], initialValue);
 
 describe('initial values', () => {
   it('starts without error', async () => {
@@ -92,8 +93,7 @@ it('stops loading on failure and returns the error', async () => {
 
   await waitForNextUpdate();
 
-  expect(result.current.error?.value).toBe(thrownError);
-  expect(result.current.error?.retry).not.toBeUndefined();
+  expect(result.current.error).toBe(thrownError);
   expect(result.current.isLoading).toEqual(false);
 });
 
@@ -120,8 +120,7 @@ it('can set error', async () => {
     result.current.setError(thrownError);
   });
 
-  expect(result.current.error?.value).toEqual(thrownError);
-  expect(result.current.error?.retry).not.toBeUndefined();
+  expect(result.current.error).toEqual(thrownError);
 });
 
 it('can set isLoading', async () => {
@@ -138,7 +137,7 @@ it('can set isLoading', async () => {
   expect(result.current.isLoading).toEqual(true);
 });
 
-describe('retry', () => {
+describe('callback', () => {
   it('sets loading true', async () => {
     callbackFn.mockRejectedValue(thrownError);
     const { result, waitForNextUpdate } = renderHook(useHookHelper, {
@@ -149,7 +148,7 @@ describe('retry', () => {
     expect(result.current.isLoading).toBe(false);
 
     act(() => {
-      result.current.error!.retry();
+      result.current.callback();
     });
 
     expect(result.current.isLoading).toBe(true);
@@ -165,9 +164,9 @@ describe('retry', () => {
     });
 
     await waitForNextUpdate();
-    expect(result.current.error?.value).toBe(thrownError);
+    expect(result.current.error).toBe(thrownError);
 
-    await act(result.current.error!.retry);
+    await act(result.current.callback);
 
     expect(result.current.error).toBeUndefined();
   });
@@ -182,13 +181,41 @@ describe('retry', () => {
     });
 
     await waitForNextUpdate();
-    expect(result.current.error?.value).toBe(thrownError);
+    expect(result.current.error).toBe(thrownError);
     expect(result.current.data).toBeUndefined();
 
-    await act(result.current.error!.retry);
+    await act(result.current.callback);
 
     expect(result.current.data).toBe(val);
     expect(result.current.error).toBeUndefined();
+  });
+
+  it('updates the scope of the callback', async () => {
+    const hook = () => {
+      const [state, setState] = useState(0);
+      const worker = useWorkerState(async () => {
+        callbackFn(state);
+      }, [state]);
+      return { state, setState, ...worker };
+    };
+
+    const { result, waitForNextUpdate } = renderHook(hook);
+
+    expect(callbackFn.mock.calls[0][0]).toBe(0);
+
+    act(() => {
+      result.current.setState(1);
+    });
+
+    await waitForNextUpdate();
+
+    act(() => {
+      result.current.callback();
+    });
+
+    await waitForNextUpdate();
+
+    expect(callbackFn.mock.calls[1][0]).toBe(1);
   });
 });
 
@@ -208,7 +235,7 @@ describe('test types', () => {
           current: { data },
         },
         waitForNextUpdate,
-      } = renderHook(() => useWorkerLoad(worker));
+      } = renderHook(() => useWorkerState(worker, []));
       await waitForNextUpdate();
 
       const assert1: Assert<ReturnType<typeof worker>, Promise<string>> = true;
@@ -225,7 +252,7 @@ describe('test types', () => {
           current: { data },
         },
         waitForNextUpdate,
-      } = renderHook(() => useWorkerLoad(worker));
+      } = renderHook(() => useWorkerState(worker, []));
       await waitForNextUpdate();
 
       const assert1: Assert<
@@ -245,7 +272,7 @@ describe('test types', () => {
           current: { data },
         },
         waitForNextUpdate,
-      } = renderHook(() => useWorkerLoad<number>(worker));
+      } = renderHook(() => useWorkerState<number>(worker, []));
       await waitForNextUpdate();
 
       const assert1: Assert<
@@ -267,7 +294,7 @@ describe('test types', () => {
           current: { data },
         },
         waitForNextUpdate,
-      } = renderHook(() => useWorkerLoad(worker, -1));
+      } = renderHook(() => useWorkerState(worker, [], -1));
       await waitForNextUpdate();
 
       const assert1: Assert<ReturnType<typeof worker>, Promise<number>> = true;
@@ -284,7 +311,7 @@ describe('test types', () => {
           current: { data },
         },
         waitForNextUpdate,
-      } = renderHook(() => useWorkerLoad(worker, -1 as number));
+      } = renderHook(() => useWorkerState(worker, [], -1 as number));
       await waitForNextUpdate();
 
       const assert1: Assert<
@@ -304,7 +331,7 @@ describe('test types', () => {
           current: { data },
         },
         waitForNextUpdate,
-      } = renderHook(() => useWorkerLoad(worker, undefined));
+      } = renderHook(() => useWorkerState(worker, [], undefined));
       await waitForNextUpdate();
 
       const assert1: Assert<ReturnType<typeof worker>, Promise<number>> = true;
@@ -321,7 +348,7 @@ describe('test types', () => {
           current: { data },
         },
         waitForNextUpdate,
-      } = renderHook(() => useWorkerLoad<number | undefined>(worker, -1));
+      } = renderHook(() => useWorkerState<number | undefined>(worker, [], -1));
       await waitForNextUpdate();
 
       const assert1: Assert<ReturnType<typeof worker>, Promise<number>> = true;

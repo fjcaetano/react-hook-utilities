@@ -8,38 +8,28 @@ import {
 } from 'react';
 
 /**
- * The return of a [[useWorkerLoad]] call.
- *
- * See [[RetryWorkerError]] for errors.
+ * The return of a [[useWorkerState]] call.
  *
  * @typeparam Data The worker's return type
  */
-interface WorkerLoad<Data> {
+export interface WorkerLoad<Data> {
   /** Indicates if the worker is running */
   isLoading: boolean;
 
   /** The worker's returned value stored in a state */
   data: Data;
 
-  /** An optional object that contains any thrown errors, if any, and a retry function */
-  error?: RetryWorkerError;
+  /** The error thrown by the worker's call */
+  error?: Error;
 
   /** Sets [[isLoading]] state manually */
   setIsLoading: (_: boolean) => void;
 
   /** Sets [[error]] state manually */
   setError: (_: Error | undefined) => void;
-}
-
-/**
- * Encapsulates [[useWorkerLoad]]'s errors and retry function
- */
-interface RetryWorkerError {
-  /** The error thrown by the worker's call */
-  value: Error;
 
   /** Calls the worker again */
-  retry: () => Promise<void>;
+  callback: () => Promise<void>;
 }
 
 /**
@@ -546,11 +536,13 @@ export const useLazyRef = <T extends any>(
  * See [[useWorker]] for more details.
  *
  * @param worker An asynchronous function that returns data, which is saved into a state
+ * @param dependencies The callback dependencies.
  * @typeparam Data The worker's return type
  * @category Workers
  */
-export function useWorkerLoad<Data>(
+export function useWorkerState<Data>(
   worker: () => Promise<Data | undefined>,
+  dependencies: readonly any[],
 ): WorkerLoad<Data | undefined>;
 
 /**
@@ -559,42 +551,40 @@ export function useWorkerLoad<Data>(
  * See [[useWorker]] for more details.
  *
  * @param worker An asynchronous function that returns data, which is saved into a state
+ * @param dependencies The callback dependencies.
  * @param initialValue The data's initial value
  * @typeparam Data The worker's return type
  * @category Workers
  */
-export function useWorkerLoad<Data>(
+export function useWorkerState<Data>(
   worker: () => Promise<Data>,
+  dependencies: readonly any[],
   initialValue: Data,
 ): WorkerLoad<Data>;
 
-export function useWorkerLoad<Data>(
+export function useWorkerState<Data>(
   worker: () => Promise<typeof initialValue>,
+  dependencies: readonly any[],
   initialValue?: Data,
 ): WorkerLoad<typeof initialValue> {
   const [data, setData] = useState<typeof initialValue>(initialValue);
-  const {
-    isLoading,
-    error,
-    setError,
-    setIsLoading,
-    callback,
-  } = useWorker(async () => {
-    setData(await worker());
-  }, []);
+  const { isLoading, error, setError, setIsLoading, callback } = useWorker(
+    async () => {
+      setData(await worker());
+    },
+    dependencies,
+  );
 
   // start loading immediately
   useDidMount(callback);
 
   return {
+    callback,
     data,
     isLoading,
     setIsLoading,
     setError,
-    error: error && {
-      value: error,
-      retry: callback,
-    },
+    error,
   };
 }
 
