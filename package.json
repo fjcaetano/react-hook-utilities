@@ -45,7 +45,7 @@
     "prettier": "^1.19.1",
     "react-test-renderer": "^16.9.0",
     "ts-jest": "^24.1.0",
-    "typedoc": "^0.15.0",
+    "typedoc": "^0.16.9",
     "typescript": "^3.7"
   }
 }
