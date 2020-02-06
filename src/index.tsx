@@ -146,6 +146,7 @@ export const useWorker = <TArgs extends readonly any[], TRet>(
  *
  * @param effect The effect to be executed. Receives the dependencies' previous state as arguments.
  * @param dependencies The effect's dependencies.
+ * @hidden
  */
 export function useEffectUpdate<T1>(
   effect: (oldState: [T1]) => void | (() => void),
@@ -157,6 +158,7 @@ export function useEffectUpdate<T1>(
  *
  * @param effect The effect to be executed. Receives the dependencies' previous state as arguments.
  * @param dependencies The effect's dependencies.
+ * @hidden
  */
 export function useEffectUpdate<T1, T2>(
   effect: (oldState: [T1, T2]) => void | (() => void),
@@ -168,6 +170,7 @@ export function useEffectUpdate<T1, T2>(
  *
  * @param effect The effect to be executed. Receives the dependencies' previous state as arguments.
  * @param dependencies The effect's dependencies.
+ * @hidden
  */
 export function useEffectUpdate<T1, T2, T3>(
   effect: (oldState: [T1, T2, T3]) => void | (() => void),
@@ -179,7 +182,7 @@ export function useEffectUpdate<T1, T2, T3>(
  *
  * @param effect The effect to be executed. Receives the dependencies' previous state as arguments.
  * @param dependencies The effect's dependencies.
- * @category Effects
+ * @hidden
  */
 export function useEffectUpdate<T1, T2, T3, T4>(
   effect: (oldState: [T1, T2, T3, T4]) => void | (() => void),
@@ -191,6 +194,7 @@ export function useEffectUpdate<T1, T2, T3, T4>(
  *
  * @param effect The effect to be executed. Receives the dependencies' previous state as arguments.
  * @param dependencies The effect's dependencies.
+ * @hidden
  */
 export function useEffectUpdate<T1, T2, T3, T4, T5>(
   effect: (oldState: [T1, T2, T3, T4, T5]) => void | (() => void),
@@ -202,6 +206,7 @@ export function useEffectUpdate<T1, T2, T3, T4, T5>(
  *
  * @param effect The effect to be executed. Receives the dependencies' previous state as arguments.
  * @param dependencies The effect's dependencies.
+ * @hidden
  */
 export function useEffectUpdate<T1, T2, T3, T4, T5, T6>(
   effect: (oldState: [T1, T2, T3, T4, T5, T6]) => void | (() => void),
@@ -213,6 +218,7 @@ export function useEffectUpdate<T1, T2, T3, T4, T5, T6>(
  *
  * @param effect The effect to be executed. Receives the dependencies' previous state as arguments.
  * @param dependencies The effect's dependencies.
+ * @hidden
  */
 export function useEffectUpdate<T1, T2, T3, T4, T5, T6, T7>(
   effect: (oldState: [T1, T2, T3, T4, T5, T6, T7]) => void | (() => void),
@@ -224,6 +230,7 @@ export function useEffectUpdate<T1, T2, T3, T4, T5, T6, T7>(
  *
  * @param effect The effect to be executed. Receives the dependencies' previous state as arguments.
  * @param dependencies The effect's dependencies.
+ * @hidden
  */
 export function useEffectUpdate<T1, T2, T3, T4, T5, T6, T7, T8>(
   effect: (oldState: [T1, T2, T3, T4, T5, T6, T7, T8]) => void | (() => void),
@@ -235,6 +242,7 @@ export function useEffectUpdate<T1, T2, T3, T4, T5, T6, T7, T8>(
  *
  * @param effect The effect to be executed. Receives the dependencies' previous state as arguments.
  * @param dependencies The effect's dependencies.
+ * @hidden
  */
 export function useEffectUpdate<T1, T2, T3, T4, T5, T6, T7, T8, T9>(
   effect: (
@@ -248,6 +256,7 @@ export function useEffectUpdate<T1, T2, T3, T4, T5, T6, T7, T8, T9>(
  *
  * @param effect The effect to be executed. Receives the dependencies' previous state as arguments.
  * @param dependencies The effect's dependencies.
+ * @hidden
  */
 export function useEffectUpdate<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>(
   effect: (
