@@ -1,3 +1,18 @@
+# [0.4.0](https://github.com/fjcaetano/react-hook-utilities/compare/v0.3.0...v0.4.0) (2020-02-10)
+
+
+### Bug Fixes
+
+* **useLazyRef:** call factory only once ([ea7eb02](https://github.com/fjcaetano/react-hook-utilities/commit/ea7eb02298129f16d627379cb4ceefb26a35a534))
+* **useWorker:** prevent multiple renders triggered by update ([9f1ee5f](https://github.com/fjcaetano/react-hook-utilities/commit/9f1ee5f12eead6f19b04717a6bf952fa8b11b27a)), closes [#16](https://github.com/fjcaetano/react-hook-utilities/issues/16)
+
+
+### Features
+
+* **usePromisedState:** use a state that waits for values ([dd32ab1](https://github.com/fjcaetano/react-hook-utilities/commit/dd32ab191c9567c36d8a0a5eb5d2daef6010fe00))
+
+
+
 # [0.3.0](https://github.com/fjcaetano/react-hook-utilities/compare/v0.2.1...v0.3.0) (2019-11-25)
 
 
