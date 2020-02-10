@@ -9,12 +9,13 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v1
+    - uses: actions/checkout@v2
 
     - name: Use Node.js 12
       uses: actions/setup-node@v1
       with:
         node-version: 12
+        registry-url: 'https://registry.npmjs.org'
 
     - name: install, build, and test
       run: |
@@ -25,12 +26,19 @@ jobs:
       env:
         CI: true
 
-    - name: Upload to NPM
-      uses: actions/npm@master
-      env:
-        NPM_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
+    - uses: actions/setup-node@master
       with:
-        args: publish
+        node-version: 12
+        registry-url: 'https://registry.npmjs.org/'
+    - name: Deploy to NPM
+      run: |
+        npm config set //registry.npmjs.org/:_authToken=$NODE_AUTH_TOKEN
+        npm config set scope "fjcaetano"
+        npm config list
+        npm publish --access public 
+      env:
+        CI: true
+        NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
 
     - name: Generate Docs
       run: |
