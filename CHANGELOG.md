@@ -1,3 +1,17 @@
+# [0.5.0](https://github.com/fjcaetano/react-hook-utilities/compare/v0.4.0...v0.5.0) (2020-02-18)
+
+
+### Bug Fixes
+
+* **Scripts:** restrain from setting global git config values for deploying docs folder ([4d58bcb](https://github.com/fjcaetano/react-hook-utilities/commit/4d58bcb23c57050ef694ab6f6061d5a0bf8ecbdc))
+
+
+### Features
+
+* **useWorkerState:** allow initialValue to be a factory function ([a845a4b](https://github.com/fjcaetano/react-hook-utilities/commit/a845a4b0c98b2e2ba5ecf23babf14262c7371509))
+
+
+
 # [0.4.0](https://github.com/fjcaetano/react-hook-utilities/compare/v0.3.0...v0.4.0) (2020-02-10)
 
 
