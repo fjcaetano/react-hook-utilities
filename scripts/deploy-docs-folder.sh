@@ -2,7 +2,7 @@
 
 REPO_PATH="https://${ACCESS_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
 
-git worktree add docs origin/gh-pages && \
+git worktree add -f docs origin/gh-pages && \
     yarn docs && \
     cd docs && \
     git add -f . && \
