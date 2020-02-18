@@ -73,6 +73,25 @@ describe('initial values', () => {
 
     expect(data).toBe(initialValue);
   });
+
+  it('may be passed as a factory', async () => {
+    const initialValue = 'foobar';
+    const {
+      result: {
+        current: { data },
+      },
+      waitForNextUpdate,
+    } = renderHook(useHookHelper, {
+      initialProps: {
+        ...initialProps,
+        initialValue: () => initialValue,
+      },
+    });
+
+    await waitForNextUpdate();
+
+    expect(data).toBe(initialValue);
+  });
 });
 
 it('stops loading when effect resolves', async () => {
