@@ -9,6 +9,7 @@ git worktree add -f docs origin/gh-pages && \
     git config user.email "actions@github.com" && \
     git config user.name "Github Actions" && \
     git commit -m "Deploying docs ${GITHUB_SHA}" --quiet --no-verify && \
-    git push "$REPO_PATH" HEAD:gh-pages
+    echo "pushing"
+    # git push "$REPO_PATH" HEAD:gh-pages
 
 git worktree remove docs

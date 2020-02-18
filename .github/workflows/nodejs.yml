@@ -22,8 +22,9 @@ jobs:
     - name: install, build, and test
       run: |
         yarn install
-        git worktree add -f docs origin/gh-pages
-        yarn docs
-        cd docs
-        git add -f .
-        git status
+
+    - name: Generate Docs
+      run: |
+        scripts/deploy-docs-folder.sh
+      env:
+        ACCESS_TOKEN: ${{secrets.DOCS_TOKEN}}
