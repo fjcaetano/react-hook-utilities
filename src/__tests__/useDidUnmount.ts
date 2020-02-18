@@ -3,23 +3,23 @@ import { renderHook } from '@testing-library/react-hooks';
 import { useDidUnmount } from '..';
 
 let cleanup: jest.Mock;
-let hook: any;
+let useHook: any;
 
 beforeEach(() => {
   cleanup = jest.fn();
-  hook = ({ func = cleanup, deps }: any = {}) => {
+  useHook = ({ func = cleanup, deps }: any = {}) => {
     useDidUnmount(func, deps);
   };
 });
 
 it('does not call the effect if the component is mounted', () => {
-  renderHook(hook);
+  renderHook(useHook);
 
   expect(cleanup).not.toHaveBeenCalled();
 });
 
 it('calls the effect when the component gets unmounted', () => {
-  const { unmount } = renderHook(hook);
+  const { unmount } = renderHook(useHook);
 
   expect(cleanup).not.toHaveBeenCalled();
   unmount();
@@ -28,7 +28,7 @@ it('calls the effect when the component gets unmounted', () => {
 });
 
 it('calls the effect only once', () => {
-  const { unmount } = renderHook(hook);
+  const { unmount } = renderHook(useHook);
 
   expect(cleanup).not.toHaveBeenCalled();
   unmount();
@@ -50,7 +50,7 @@ it('runs an async funciton', async () => {
     finished = true;
   });
 
-  const { unmount } = renderHook(hook);
+  const { unmount } = renderHook(useHook);
 
   unmount();
 
@@ -64,7 +64,7 @@ it('runs an async funciton', async () => {
 
 it('calls the effect with updated dependencies', () => {
   const secondCleanup = jest.fn();
-  const { unmount, rerender } = renderHook(hook, {
+  const { unmount, rerender } = renderHook(useHook, {
     initialProps: { func: cleanup, deps: [cleanup] },
   });
 
@@ -78,7 +78,7 @@ it('calls the effect with updated dependencies', () => {
 
 it('does not update the effect when the dependencies have not been updated', () => {
   const secondCleanup = jest.fn();
-  const { unmount, rerender } = renderHook(hook, {
+  const { unmount, rerender } = renderHook(useHook, {
     initialProps: { func: cleanup, deps: [cleanup] },
   });
 

@@ -210,7 +210,7 @@ describe('callback', () => {
   });
 
   it('updates the scope of the callback', async () => {
-    const hook = () => {
+    const useHook = () => {
       const [state, setState] = useState(0);
       const worker = useWorkerState(async () => {
         callbackFn(state);
@@ -218,7 +218,7 @@ describe('callback', () => {
       return { state, setState, ...worker };
     };
 
-    const { result, waitForNextUpdate } = renderHook(hook);
+    const { result, waitForNextUpdate } = renderHook(useHook);
 
     expect(callbackFn.mock.calls[0][0]).toBe(0);
 
