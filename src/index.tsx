@@ -554,20 +554,20 @@ export function useWorkerState<Data>(
  *
  * @param worker An asynchronous function that returns data, which is saved into a state
  * @param dependencies The callback dependencies.
- * @param initialValue The data's initial value
+ * @param initialValue The data's initial value. May be a factory function.
  * @typeparam Data The worker's return type
  * @category Workers
  */
 export function useWorkerState<Data>(
   worker: () => Promise<Data>,
   dependencies: readonly any[],
-  initialValue: Data,
+  initialValue: Data | (() => Data),
 ): WorkerLoad<Data>;
 
 export function useWorkerState<Data>(
   worker: () => Promise<typeof initialValue>,
   dependencies: readonly any[],
-  initialValue?: Data,
+  initialValue?: Data | (() => Data),
 ): WorkerLoad<typeof initialValue> {
   const [data, setData] = useState<typeof initialValue>(initialValue);
   const { isLoading, error, setError, setIsLoading, callback } = useWorker(
