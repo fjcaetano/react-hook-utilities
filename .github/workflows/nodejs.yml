@@ -22,9 +22,29 @@ jobs:
     - name: install, build, and test
       run: |
         yarn install
+        yarn build
+        yarn test
+        yarn lint
+      env:
+        CI: true
+
+    - uses: actions/setup-node@master
+      with:
+        node-version: 12
+        registry-url: 'https://registry.npmjs.org/'
+    - name: Deploy to NPM
+      run: |
+        npm config set //registry.npmjs.org/:_authToken=$NODE_AUTH_TOKEN
+        npm config set scope "fjcaetano"
+        npm config list
+        npm publish --access public --dry-run
+      env:
+        CI: true
+        NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
 
     - name: Generate Docs
       run: |
+        ls -la .
         scripts/deploy-docs-folder.sh
       env:
         ACCESS_TOKEN: ${{secrets.DOCS_TOKEN}}
