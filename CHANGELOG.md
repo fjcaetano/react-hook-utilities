@@ -1,3 +1,17 @@
+# [1.0.0-alpha.2](https://github.com/fjcaetano/react-hook-utilities/compare/v0.5.0...v1.0.0-alpha.2) (2020-02-18)
+
+
+### Bug Fixes
+
+* **Scripts:** force worktree creation for deploying docs ([bdbb589](https://github.com/fjcaetano/react-hook-utilities/commit/bdbb58927cdf8274e3e76502a8c1204e0c96c901))
+
+
+### Features
+
+* **ESLint:** add ESLint rule to parse hooks ([84ddad2](https://github.com/fjcaetano/react-hook-utilities/commit/84ddad279188616a556ec1b601b651fb8ac0b2e9))
+
+
+
 # [0.5.0](https://github.com/fjcaetano/react-hook-utilities/compare/v0.4.0...v0.5.0) (2020-02-18)
 
 
