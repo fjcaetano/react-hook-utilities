@@ -9,7 +9,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [8.x, 10.x, 12.x]
+        node-version: [12.x]
 
     steps:
     - uses: actions/checkout@v1
@@ -22,15 +22,8 @@ jobs:
     - name: install, build, and test
       run: |
         yarn install
-        yarn build
-        yarn test
-        yarn lint
-      env:
-        CI: true
-
-    - name: Upload coverage
-      if: success()
-      run: bash <(curl -s https://codecov.io/bash) -t $TOKEN -B $REF
-      env:
-        TOKEN: "${{ secrets.CODECOV_TOKEN }}"
-        REF: "${{ github.ref }}"
+        git worktree add -f docs origin/gh-pages
+        yarn docs
+        cd docs
+        git add -f .
+        git status
